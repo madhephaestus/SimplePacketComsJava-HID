@@ -51,7 +51,7 @@ class ConnectToHardware {
 		long sum;
 		int min = 100000;
 		int max = 0;
-		float sinWaveInc = 2000;
+		float sinWaveInc = 200;
 		float seconds = (float) 0.01;
 		float range = -256;
 		for (int i = 1; i < sinWaveInc; i++) {
@@ -70,14 +70,15 @@ class ConnectToHardware {
 		}
 		System.out.println("disconnect");
 		base.disconnect();
+		dev.disconnect();
 		try {
-			TimeUnit.SECONDS.sleep(1);
+			Thread.sleep(1000);
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		System.out.println("done");
-		System.exit(0);
+		//System.exit(0);
 
 		
 	}

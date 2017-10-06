@@ -118,7 +118,7 @@ public class HIDSimpleComsDevice extends NonBowlerDevice {
 					// Clean shutdown
 					hidServices.shutdown();
 				}
-				// println "HID device clean shutdown"
+				System.out.println ("HID device clean shutdown");
 			}
 			// throw new RuntimeException("No HID device found")
 		};
