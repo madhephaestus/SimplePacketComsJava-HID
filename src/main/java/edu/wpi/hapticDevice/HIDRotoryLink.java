@@ -20,14 +20,14 @@ public class HIDRotoryLink extends AbstractRotoryLink{
 		device=c;
 		if(device ==null)
 			throw new RuntimeException("Device can not be null");
-		c.addEvent(37,{
-			int val= getCurrentPosition();
+		c.addEvent(37,()->{
+			int val= (int) getCurrentPosition();
 			if(lastPushedVal!=val){
 				//println "Fire Link Listner "+index+" value "+getCurrentPosition()
 				fireLinkListener(val);
 			}
 			lastPushedVal=val;
-		})
+		});
 		
 	}
 
