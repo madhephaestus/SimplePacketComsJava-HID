@@ -1,5 +1,7 @@
 package edu.wpi.hapticDevice;
 
+import java.util.concurrent.TimeUnit;
+
 import com.neuronrobotics.bowlerstudio.BowlerStudio;
 import com.neuronrobotics.sdk.addons.kinematics.LinkConfiguration;
 import com.neuronrobotics.sdk.addons.kinematics.LinkFactory;
@@ -9,7 +11,8 @@ import com.neuronrobotics.sdk.common.DeviceManager;
 
 class ConnectToHardware {
 
-	public static void main(String[] args) {
+	public static void main(String[] args) 
+	{
 
 		HIDSimpleComsDevice dev = (HIDSimpleComsDevice) DeviceManager.getSpecificDevice("hidbowler", () -> {
 			// If the device does not exist, prompt for the connection
@@ -44,7 +47,7 @@ class ConnectToHardware {
 		});
 
 		// command index
-
+		base.getAllDHChains().get(0).getCurrentJointSpaceVector();
 		long sum;
 		int min = 100000;
 		int max = 0;
@@ -56,7 +59,7 @@ class ConnectToHardware {
 				dev.setValues((int) j, (float) (Math.sin(((float) i) / sinWaveInc * Math.PI * 2) * range) - range,
 						(float) ((Math.cos(((float) i) / sinWaveInc * Math.PI * 2) * range) / seconds), (float) 0);
 				float[] returnValues = dev.getValues(j);
-				System.out.println("Return data " + j + " " + returnValues);
+				System.out.println("Return data " + j + " " + returnValues[0]);
 			}
 			try {
 				Thread.sleep((long) (1000.0 * seconds));
@@ -65,7 +68,18 @@ class ConnectToHardware {
 				e.printStackTrace();
 			}
 		}
+		System.out.println("disconnect");
+		base.disconnect();
+		try {
+			TimeUnit.SECONDS.sleep(1);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		System.out.println("done");
+		System.exit(0);
 
+		
 	}
 
 }
