@@ -2,7 +2,10 @@ package edu.wpi.hapticDevice;
 
 import java.util.ArrayList;
 
+import com.neuronrobotics.sdk.addons.kinematics.DHChain;
 import com.neuronrobotics.sdk.addons.kinematics.DHParameterKinematics;
+import com.neuronrobotics.sdk.addons.kinematics.math.RotationNR;
+import com.neuronrobotics.sdk.addons.kinematics.math.TransformNR;
 import com.neuronrobotics.sdk.common.NonBowlerDevice;
 import Jama.Matrix;
 import groovy.lang.Closure;
@@ -11,7 +14,7 @@ public class PhyicsDevice extends NonBowlerDevice{
 	HIDSimpleComsDevice hidEventEngine;
 	DHParameterKinematics physicsSource ;
 	int count = 0;
-	Closure event = ()-> {
+	Runnable event = ()-> {
 	
 	
 			count ++;
@@ -33,14 +36,13 @@ public class PhyicsDevice extends NonBowlerDevice{
 				// convert to the 3x6 marray of doubles for display
 				double [][] data = jacobian.getArray();
 	
-			    ArrayList<TransformNR> intChainLocal = chain.intChain;
-				ArrayList<TransformNR> stateChainLocal = chain.chain;
-			    double PreviousOmega = 0;
+			    //ArrayList<TransformNR> intChainLocal = chain.intChain;
+				ArrayList<TransformNR> stateChainLocal = chain.getCachedChain();
+			    double[] PreviousOmega = 0;
 			    double [] corilousTerm = {0,0,0};
-			     
+			    TransformNR previousTransform = new TransformNR();
 				for (int i=0;i<jointSpaceVector.length;i++)
 				{
-					TransformNR previousTransform = i ==0 ? new TransformNR():intChainLocal.get(i-1);
 					
 					TransformNR previousTransformTranspose = new TransformNR(previousTransform.getMatrixTransform().transpose() );
 					
@@ -64,6 +66,7 @@ public class PhyicsDevice extends NonBowlerDevice{
 					
 					corilousTerm[i]=angularVelocityOfLink.get(0,i);
 					PreviousOmega= angularVelocityOfLink.get(0,i);
+					previousTransform = rotationBetweenZeroAndI;
 				}
 				//println corilousTerm
 			}
