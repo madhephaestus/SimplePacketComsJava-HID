@@ -1,4 +1,4 @@
-package edu.wpi.hapticDevice;
+package edu.wpi.SimplePacketComs;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;

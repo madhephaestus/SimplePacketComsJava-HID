@@ -1,4 +1,4 @@
-package edu.wpi.hapticDevice;
+package edu.wpi.SimplePacketComs;
 
 public class PacketType{
 	int idOfCommand=0;
