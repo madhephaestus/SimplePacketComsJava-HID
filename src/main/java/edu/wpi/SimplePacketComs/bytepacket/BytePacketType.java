@@ -1,4 +1,7 @@
-package edu.wpi.SimplePacketComs;
+package edu.wpi.SimplePacketComs.bytepacket;
+
+import edu.wpi.SimplePacketComs.PacketProcessor;
+import edu.wpi.SimplePacketComs.PacketType;
 
 public  class BytePacketType extends PacketType{
 	int idOfCommand=0;

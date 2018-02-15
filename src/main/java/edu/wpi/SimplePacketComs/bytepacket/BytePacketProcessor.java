@@ -1,7 +1,9 @@
-package edu.wpi.SimplePacketComs;
+package edu.wpi.SimplePacketComs.bytepacket;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
+
+import edu.wpi.SimplePacketComs.PacketProcessor;
 
 class BytePacketProcessor extends PacketProcessor{
 	
@@ -10,7 +12,7 @@ class BytePacketProcessor extends PacketProcessor{
 		 numberOfBytesPerValue = 1;
 		 numValues = (packetSize / numberOfBytesPerValue) - (4/numberOfBytesPerValue);
 	}
-	Number[] parse(byte[] bytes) {
+	public Number[] parse(byte[] bytes) {
 		Number[] returnValues = new Number[numValues];
 
 		// println "Parsing packet"
@@ -22,7 +24,7 @@ class BytePacketProcessor extends PacketProcessor{
 		return returnValues;
 	}
 
-	byte[] command(int idOfCommand, Number[] values) {
+	public byte[] command(int idOfCommand, Number[] values) {
 		byte[] message = new byte[packetSize];
 		ByteBuffer.wrap(message).order(be).putInt(0, idOfCommand).array();
 		for (int i = 0; i < numValues && i < values.length; i++) {

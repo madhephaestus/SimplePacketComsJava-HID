@@ -159,19 +159,20 @@ public abstract class AbstractSimpleComsDevice {
 		connected=false;
 		disconnectDeviceImp();
 	}
-
-	abstract int read(byte[] message, int i);
-
 	private boolean isVirtual() {
 		// TODO Auto-generated method stub
 		return virtual;
 	}
+	
+	public abstract int read(byte[] message, int i);
 
-	abstract int write(byte[] message, int length, byte b);
+	
 
-	abstract boolean disconnectDeviceImp();
+	public abstract int write(byte[] message, int length, byte b);
 
-	abstract boolean connectDeviceImp();
+	public abstract boolean disconnectDeviceImp();
+
+	public abstract boolean connectDeviceImp();
 
 	/*
 	 * { if(hidServices==null) hidServices = HidManager.getHidServices(); // Provide
