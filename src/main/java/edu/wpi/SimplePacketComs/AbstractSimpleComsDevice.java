@@ -46,14 +46,14 @@ public abstract class AbstractSimpleComsDevice {
 		}
 	}
 
-	void removeEvent(Integer id, Runnable event) {
+	public void removeEvent(Integer id, Runnable event) {
 		if (events.get(id) == null) {
 			events.put(id, new ArrayList<>());
 		}
 		events.get(id).remove(event);
 	}
 
-	void addEvent(Integer id, Runnable event) {
+	public void addEvent(Integer id, Runnable event) {
 		if (events.get(id) == null) {
 			events.put(id, new ArrayList<>());
 		}
@@ -68,7 +68,7 @@ public abstract class AbstractSimpleComsDevice {
 				try {
 					byte[] message = packet.processor.command(packet.idOfCommand, packet.downstream);
 					// println "Writing: "+ message
-					int val = write(message, message.length, (byte) 0);
+					int val = write(message, message.length, 1);
 					if (val > 0) {
 						int read = read(message, 1000);
 						if (read > 0) {
@@ -82,7 +82,8 @@ public abstract class AbstractSimpleComsDevice {
 							// println "Read failed"
 						}
 
-					}
+					}else
+						return;
 				} catch (Throwable t) {
 					t.printStackTrace(System.out);
 					disconnect();
@@ -155,7 +156,7 @@ public abstract class AbstractSimpleComsDevice {
 		return true;
 	}
 
-	void disconnect() {
+	public void disconnect() {
 		connected=false;
 		disconnectDeviceImp();
 	}
@@ -164,11 +165,10 @@ public abstract class AbstractSimpleComsDevice {
 		return virtual;
 	}
 	
-	public abstract int read(byte[] message, int i);
+	public abstract int read(byte[] message, int howLongToWaitBeforeTimeout);
 
-	
 
-	public abstract int write(byte[] message, int length, byte b);
+	public abstract int write(byte[] message, int length, int howLongToWaitBeforeTimeout);
 
 	public abstract boolean disconnectDeviceImp();
 

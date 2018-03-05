@@ -29,7 +29,7 @@ class BytePacketProcessor extends PacketProcessor{
 		ByteBuffer.wrap(message).order(be).putInt(0, idOfCommand).array();
 		for (int i = 0; i < numValues && i < values.length; i++) {
 			int baseIndex = (numberOfBytesPerValue * i) + 4;
-			message[baseIndex]=(byte) values[i];
+			message[baseIndex]=values[i].byteValue();
 		}
 		return message;
 	}
