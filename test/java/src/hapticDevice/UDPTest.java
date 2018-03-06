@@ -35,14 +35,14 @@ public class UDPTest {
 			device.addPollingPacket(gameController);
 			device.addEvent(1970, () -> {
 				System.out.print("\r\n\r\nPacket updated: ");
-				for (int i = 0; i < 5; i++) {
+				for (int i = 0; i < gameController.upstream.length; i++) {
 					System.out.print(" " + gameController.upstream[i] + " ");
 
 				}
 			});
 			device.connect();
-			Thread.sleep(500000);
-			//device.disconnect();
+			Thread.sleep(50000);
+			device.disconnect();
 		}
 
 	}

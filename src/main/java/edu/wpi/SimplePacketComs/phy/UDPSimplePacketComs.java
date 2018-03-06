@@ -62,9 +62,11 @@ public class UDPSimplePacketComs extends AbstractSimpleComsDevice {
 		}
 		addrs.add(receivePacket.getAddress());
 		int len = receivePacket.getLength();
+		byte [] data = receivePacket.getData();
 		for(int i=0;i<len;i++) {
-			message[i]=receiveData[i];
+			message[i]=data[i];
 		}
+		
 		return len;
 	}
 

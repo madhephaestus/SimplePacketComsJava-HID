@@ -126,9 +126,9 @@ public abstract class AbstractSimpleComsDevice {
 			public void run() {
 				// println "Starting HID Thread"
 				while (connected) {
+					
 					// println "loop"
 					try {
-						Thread.sleep(1);
 						for(PacketType pollingPacket:pollingQueue) {
 							process(pollingPacket);
 						}
@@ -147,7 +147,13 @@ public abstract class AbstractSimpleComsDevice {
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
-
+					try {
+						Thread.sleep(1);
+					} catch (InterruptedException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+						connected=false;
+					}
 				}
 				disconnect();
 			}
