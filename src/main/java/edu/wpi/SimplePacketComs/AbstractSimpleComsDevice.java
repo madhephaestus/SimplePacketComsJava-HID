@@ -66,7 +66,7 @@ public abstract class AbstractSimpleComsDevice {
 			if (!isVirtual()) {
 				// println "Writing packet"
 				try {
-					byte[] message = packet.processor.command(packet.idOfCommand, packet.downstream);
+					byte[] message = packet.command(packet.idOfCommand, packet.downstream);
 					// println "Writing: "+ message
 					int val = write(message, message.length, 1);
 					if (val > 0) {
@@ -74,7 +74,7 @@ public abstract class AbstractSimpleComsDevice {
 						if (read > 0) {
 							// println "Parsing packet"
 							// println "read: "+ message
-							Number[] up = packet.processor.parse(message);
+							Number[] up = packet.parse(message);
 							for (int i = 0; i < packet.upstream.length; i++) {
 								packet.upstream[i] = up[i];
 							}
