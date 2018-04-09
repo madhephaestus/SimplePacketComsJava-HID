@@ -23,7 +23,6 @@ public abstract class PacketType{
 		for(int i=0;i<numValues;i++) {
 			downstream[i]=0;
 			upstream[i]=0;
-
 		}
 	}
 
