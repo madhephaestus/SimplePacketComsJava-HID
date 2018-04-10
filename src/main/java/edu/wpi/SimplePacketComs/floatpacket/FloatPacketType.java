@@ -10,7 +10,12 @@ public  class FloatPacketType extends PacketType{
 		 numberOfBytesPerValue = 4;
 		 numValues = (packetSize / numberOfBytesPerValue) - (4/numberOfBytesPerValue);
 		 
-		init();
+		downstream=new Float[numValues];
+		upstream=new Float[numValues];
+		for(int i=0;i<numValues;i++) {
+			downstream[i]=(float)0;
+			upstream[i]=(float)0;
+		}
 	}
 	@Override
 	public Number[] parse(byte[] bytes) {
@@ -26,11 +31,12 @@ public  class FloatPacketType extends PacketType{
 	}
 	@Override 
 	public byte[] command(int idOfCommand, Number[] values) {
+		
 		byte[] message = new byte[packetSize];
 		ByteBuffer.wrap(message).order(be).putInt(0, idOfCommand).array();
 		for (int i = 0; i < numValues && i < values.length; i++) {
 			int baseIndex = (4 * i) + 4;
-			ByteBuffer.wrap(message).order(be).putFloat(baseIndex, (float)values[i]).array();
+			ByteBuffer.wrap(message).order(be).putFloat(baseIndex,(float)values[i]).array();
 		}
 		return message;
 	}
