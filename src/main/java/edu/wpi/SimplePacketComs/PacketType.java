@@ -10,7 +10,7 @@ public abstract class PacketType{
 	public boolean done=false;
 	public boolean started = false;
 
-	protected ByteOrder be = ByteOrder.LITTLE_ENDIAN;
+	protected static ByteOrder be = ByteOrder.LITTLE_ENDIAN;
 	protected int packetSize = 64;
 	protected int numberOfBytesPerValue = 4;
 	public int numValues = (packetSize / 4) - 1;
@@ -26,7 +26,7 @@ public abstract class PacketType{
 		}
 	}
 
-	int getId(byte[] bytes) {
+	public static int getId(byte[] bytes) {
 		return ByteBuffer.wrap(bytes).order(be).getInt(0);
 	}
 

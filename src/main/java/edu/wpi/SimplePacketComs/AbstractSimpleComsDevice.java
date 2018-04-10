@@ -74,12 +74,17 @@ public abstract class AbstractSimpleComsDevice {
 						if (read > 0) {
 							// println "Parsing packet"
 							// println "read: "+ message
-							Number[] up = packet.parse(message);
-							for (int i = 0; i < packet.upstream.length; i++) {
-								packet.upstream[i] = up[i];
+							int ID = PacketType.getId(message);
+							if(ID == packet.idOfCommand) {
+								Number[] up = packet.parse(message);
+								for (int i = 0; i < packet.upstream.length; i++) {
+									packet.upstream[i] = up[i];
+								}
+							}else {
+								System.out.println( "Crosstalk packet!!");
 							}
 						} else {
-							// println "Read failed"
+							System.out.println( "Read failed");
 						}
 
 					}else
