@@ -74,20 +74,20 @@ public class UDPTest {
 			BytePacketType packetThree = new BytePacketType(2012, 64);
 			device.addPollingPacket(packetOne);
 			device.addPollingPacket(packetTwo);
-			//device.addPollingPacket(packetThree);
+			device.addPollingPacket(packetThree);
 			device.addEvent(1871, ()->{
-				System.out.print("\r\n\r\n1871 Packet updated: ");
+				//System.out.print("\r\n\r\n1871 Packet updated: ");
 				for (int i = 0; i < packetOne.upstream.length; i++) {
-					System.out.println(" " + packetOne.upstream[i] + " ");
+					//System.out.println(" " + packetOne.upstream[i] + " ");
 					if(Math.abs((Float)packetOne.upstream[i] - 27.0) > 0.0001) {
 						fail(27+" expected Wrong response "+packetOne.upstream[i]);
 					}
 				}
 			});
 			device.addEvent(1936,()-> {
-				System.out.print("\r\n\r\n1936 Packet updated: ");
+				//System.out.print("\r\n\r\n1936 Packet updated: ");
 				for (int i = 0; i < packetTwo.upstream.length; i++) {
-					System.out.println(" " + packetTwo.upstream[i] + " ");
+					//System.out.println(" " + packetTwo.upstream[i] + " ");
 					if(Math.abs((Float)packetTwo.upstream[i] - 17.0)> 0.0001) {
 						fail(17+" expected Wrong response "+packetTwo.upstream[i]);
 					}

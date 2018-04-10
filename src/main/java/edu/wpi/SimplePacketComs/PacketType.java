@@ -29,6 +29,19 @@ public abstract class PacketType{
 	public static int getId(byte[] bytes) {
 		return ByteBuffer.wrap(bytes).order(be).getInt(0);
 	}
+	public static void writeId(int idOfCommand,byte[] bytes) {
+		//bytes[3]=(byte)(idOfCommand >> 24);
+		//bytes[2]=(byte)(idOfCommand >> 16);
+		//bytes[1]=(byte)(idOfCommand >> 8);
+		//bytes[0]=(byte)(idOfCommand );
+		byte[] b = ByteBuffer.allocate(4).putInt(idOfCommand).array();
+		for(int i=0;i<4;i++) {
+			int num = b[3-i];
+			if(num<0)
+				num+=256;
+			bytes[i]=(byte)num;
+		}
+	}
 
 	public abstract Number[] parse(byte[] bytes);
 

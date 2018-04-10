@@ -65,13 +65,14 @@ public abstract class AbstractSimpleComsDevice {
 		try {
 			if (!isVirtual()) {
 				// println "Writing packet"
+				long start = System.currentTimeMillis();
 				try {
 					byte[] message = packet.command(packet.idOfCommand, packet.downstream);
 					// println "Writing: "+ message
 					int val = write(message, message.length, 1);
 					if (val > 0) {
 						int read = read(message, 1000);
-						if (read > 0) {
+						if (read >= packet.upstream.length) {
 							// println "Parsing packet"
 							// println "read: "+ message
 							int ID = PacketType.getId(message);
@@ -80,11 +81,20 @@ public abstract class AbstractSimpleComsDevice {
 								for (int i = 0; i < packet.upstream.length; i++) {
 									packet.upstream[i] = up[i];
 								}
+								//System.out.println("Took "+(System.currentTimeMillis()-start));
 							}else {
-								System.out.println( "Crosstalk packet!!");
+								System.out.print( "\r\nCross Talk "+ID+" expected "+packet.idOfCommand+" ");
+								for (int i=0;i<8;i++) {
+									System.out.print(message[i]+" " );
+
+								}
+								System.out.println(" " );
+
+								return;
 							}
 						} else {
 							System.out.println( "Read failed");
+							return;
 						}
 
 					}else
@@ -139,10 +149,11 @@ public abstract class AbstractSimpleComsDevice {
 						}
 						while (processQueue.size() > 0) {
 							try {
-								PacketType temPack = processQueue.remove(0);
+								PacketType temPack = processQueue.get(0);
 								if (temPack != null) {
 									// println "Processing "+temPack
 									process(temPack);
+									processQueue.remove(0);
 								}
 							} catch (Exception e) {
 								e.printStackTrace();

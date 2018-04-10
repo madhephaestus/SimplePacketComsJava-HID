@@ -33,7 +33,7 @@ public  class FloatPacketType extends PacketType{
 	public byte[] command(int idOfCommand, Number[] values) {
 		
 		byte[] message = new byte[packetSize];
-		ByteBuffer.wrap(message).order(be).putInt(0, idOfCommand).array();
+		writeId(idOfCommand,message);
 		for (int i = 0; i < numValues && i < values.length; i++) {
 			int baseIndex = (4 * i) + 4;
 			ByteBuffer.wrap(message).order(be).putFloat(baseIndex,(float)values[i]).array();
