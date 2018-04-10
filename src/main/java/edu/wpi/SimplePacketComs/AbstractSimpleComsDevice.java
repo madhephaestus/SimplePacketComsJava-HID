@@ -3,6 +3,9 @@ package edu.wpi.SimplePacketComs;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import edu.wpi.SimplePacketComs.bytepacket.BytePacketType;
+import edu.wpi.SimplePacketComs.floatpacket.FloatPacketType;
+
 public abstract class AbstractSimpleComsDevice {
 	HashMap<Integer, ArrayList<Runnable>> events = new HashMap<>();
 
@@ -10,7 +13,7 @@ public abstract class AbstractSimpleComsDevice {
 	// int vid =0 ;
 	// int pid =0;
 	// HidDevice hidDevice=null;
-	//public PacketProcessor processor = new PacketProcessor();
+	// public PacketProcessor processor = new PacketProcessor();
 	boolean connected = false;
 	// PacketType pollingPacket = new PacketType(37);
 	// PacketType pidPacket = new PacketType(65);
@@ -60,6 +63,65 @@ public abstract class AbstractSimpleComsDevice {
 		events.get(id).add(event);
 	}
 
+	public ArrayList<Integer> getIDs() {
+		ArrayList<Integer> ids = new ArrayList<>();
+		for (PacketType pt : pollingQueue) {
+			ids.add(pt.idOfCommand);
+		}
+		return ids;
+	}
+
+	public void writeFloats(int id, double[] values) {
+		for (PacketType pt : pollingQueue) {
+			if (FloatPacketType.class.isInstance(pt))
+
+				if (pt.idOfCommand == id) {
+					for (int i = 0; i < pt.downstream.length; i++) {
+						pt.downstream[i] = (float) values[i];
+					}
+					return;
+				}
+		}
+	}
+
+	public void writeBytes(int id, byte[] values) {
+		for (PacketType pt : pollingQueue) {
+			if (BytePacketType.class.isInstance(pt))
+
+				if (pt.idOfCommand == id) {
+					for (int i = 0; i < pt.downstream.length; i++) {
+						pt.downstream[i] = (byte) values[i];
+					}
+					return;
+				}
+		}
+	}
+
+	public void readFloats(int id, double[] values) {
+		for (PacketType pt : pollingQueue) {
+			if (FloatPacketType.class.isInstance(pt))
+
+				if (pt.idOfCommand == id) {
+					for (int i = 0; i < pt.upstream.length; i++) {
+						values[i] = (double) pt.upstream[i];
+					}
+					return;
+				}
+		}
+	}
+
+	public void readBytes(int id, byte[] values) {
+		for (PacketType pt : pollingQueue) {
+			if (BytePacketType.class.isInstance(pt))
+				if (pt.idOfCommand == id) {
+					for (int i = 0; i < pt.upstream.length; i++) {
+						values[i] = (byte) pt.upstream[i];
+					}
+					return;
+				}
+		}
+	}
+
 	private void process(PacketType packet) {
 		packet.started = true;
 		try {
@@ -76,28 +138,28 @@ public abstract class AbstractSimpleComsDevice {
 							// println "Parsing packet"
 							// println "read: "+ message
 							int ID = PacketType.getId(message);
-							if(ID == packet.idOfCommand) {
+							if (ID == packet.idOfCommand) {
 								Number[] up = packet.parse(message);
 								for (int i = 0; i < packet.upstream.length; i++) {
 									packet.upstream[i] = up[i];
 								}
-								//System.out.println("Took "+(System.currentTimeMillis()-start));
-							}else {
-								System.out.print( "\r\nCross Talk "+ID+" expected "+packet.idOfCommand+" ");
-								for (int i=0;i<8;i++) {
-									System.out.print(message[i]+" " );
+								// System.out.println("Took "+(System.currentTimeMillis()-start));
+							} else {
+								System.out.print("\r\nCross Talk " + ID + " expected " + packet.idOfCommand + " ");
+								for (int i = 0; i < 8; i++) {
+									System.out.print(message[i] + " ");
 
 								}
-								System.out.println(" " );
+								System.out.println(" ");
 
 								return;
 							}
 						} else {
-							System.out.println( "Read failed");
+							System.out.println("Read failed");
 							return;
 						}
 
-					}else
+					} else
 						return;
 				} catch (Throwable t) {
 					t.printStackTrace(System.out);
@@ -135,16 +197,16 @@ public abstract class AbstractSimpleComsDevice {
 		} else {
 			setVirtual(true);
 		}
-		
+
 		connected = true;
 		new Thread() {
 			public void run() {
 				// println "Starting HID Thread"
 				while (connected) {
-					
+
 					// println "loop"
 					try {
-						for(PacketType pollingPacket:pollingQueue) {
+						for (PacketType pollingPacket : pollingQueue) {
 							process(pollingPacket);
 						}
 						while (processQueue.size() > 0) {
@@ -168,7 +230,7 @@ public abstract class AbstractSimpleComsDevice {
 					} catch (InterruptedException e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
-						connected=false;
+						connected = false;
 					}
 				}
 				disconnect();
@@ -179,16 +241,16 @@ public abstract class AbstractSimpleComsDevice {
 	}
 
 	public void disconnect() {
-		connected=false;
+		connected = false;
 		disconnectDeviceImp();
 	}
+
 	private boolean isVirtual() {
 		// TODO Auto-generated method stub
 		return virtual;
 	}
-	
-	public abstract int read(byte[] message, int howLongToWaitBeforeTimeout);
 
+	public abstract int read(byte[] message, int howLongToWaitBeforeTimeout);
 
 	public abstract int write(byte[] message, int length, int howLongToWaitBeforeTimeout);
 
