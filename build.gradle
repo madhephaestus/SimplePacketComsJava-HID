@@ -23,12 +23,6 @@ task sourcesJar(type: Jar) {
 }
 
 
-if (!hasProperty('mainClass')) {
-    ext.mainClass = 'eu.mihosoft.vrl.v3d.Main'
-}
-
-mainClassName = mainClass
-
 repositories {
     mavenCentral()
     jcenter()
@@ -56,6 +50,7 @@ artifacts {
     archives sourcesJar
 }
 
+mainClassName = ""
 dependencies {
 
 }
@@ -87,7 +82,7 @@ jar {
 
 group = "com.neuronrobotics"
 archivesBaseName = "SimplePacketComsJava"
-version = "0.0.1"
+version = "0.0.3"
 
 
 artifacts {
@@ -114,13 +109,13 @@ uploadArchives {
 		  name 'JCSG JavaCad'
 		  packaging 'jar'
 		  // optionally artifactId can be defined here
-		  description 'A Java based CSG Cad library'
-		  url 'http://neuronrobotics.com'
+		  description 'A simple packet communication library'
+		  url 'https://github.com/madhephaestus/SimplePacketComsJava'
   
 		  scm {
-			connection 			'scm:git:https://github.com/NeuronRobotics/JCSG'
-			developerConnection 'scm:git:git@github.com:NeuronRobotics/JCSG.git'
-			url 'https://github.com/NeuronRoboticsG/JCSG'
+			connection 			'scm:git:https://github.com/madhephaestus/SimplePacketComsJava.git'
+			developerConnection 'scm:git:git@github.com:madhephaestus/SimplePacketComsJava.git'
+			url 'https://github.com/madhephaestus/SimplePacketComsJava'
 		  }
   
 		  licenses {
@@ -142,4 +137,3 @@ uploadArchives {
 	}
   }
   */
-
