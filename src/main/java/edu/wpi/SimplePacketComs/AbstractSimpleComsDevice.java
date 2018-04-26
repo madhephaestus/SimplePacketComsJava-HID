@@ -8,17 +8,7 @@ import edu.wpi.SimplePacketComs.floatpacket.FloatPacketType;
 
 public abstract class AbstractSimpleComsDevice {
 	HashMap<Integer, ArrayList<Runnable>> events = new HashMap<>();
-
-	// HidServices hidServices = null;
-	// int vid =0 ;
-	// int pid =0;
-	// HidDevice hidDevice=null;
-	// public PacketProcessor processor = new PacketProcessor();
 	boolean connected = false;
-	// PacketType pollingPacket = new PacketType(37);
-	// PacketType pidPacket = new PacketType(65);
-	// PacketType PDVelPacket = new PacketType(48);
-	// PacketType SetVelocity = new PacketType(42);
 
 	ArrayList<PacketType> processQueue = new ArrayList<PacketType>();
 	ArrayList<PacketType> pollingQueue = new ArrayList<PacketType>();
@@ -74,9 +64,8 @@ public abstract class AbstractSimpleComsDevice {
 	public void writeFloats(int id, double[] values) {
 		for (PacketType pt : pollingQueue) {
 			if (FloatPacketType.class.isInstance(pt))
-
 				if (pt.idOfCommand == id) {
-					for (int i = 0; i < pt.downstream.length; i++) {
+					for (int i = 0; i < pt.downstream.length && i<values.length; i++) {
 						pt.downstream[i] = (float) values[i];
 					}
 					return;
@@ -89,7 +78,7 @@ public abstract class AbstractSimpleComsDevice {
 			if (BytePacketType.class.isInstance(pt))
 
 				if (pt.idOfCommand == id) {
-					for (int i = 0; i < pt.downstream.length; i++) {
+					for (int i = 0; i < pt.downstream.length && i<values.length; i++) {
 						pt.downstream[i] = (byte) values[i];
 					}
 					return;
@@ -102,7 +91,7 @@ public abstract class AbstractSimpleComsDevice {
 			if (FloatPacketType.class.isInstance(pt))
 
 				if (pt.idOfCommand == id) {
-					for (int i = 0; i < pt.upstream.length; i++) {
+					for (int i = 0; i < pt.upstream.length && i<values.length; i++) {
 						values[i] = (double) pt.upstream[i];
 					}
 					return;
@@ -114,7 +103,7 @@ public abstract class AbstractSimpleComsDevice {
 		for (PacketType pt : pollingQueue) {
 			if (BytePacketType.class.isInstance(pt))
 				if (pt.idOfCommand == id) {
-					for (int i = 0; i < pt.upstream.length; i++) {
+					for (int i = 0; i < pt.upstream.length && i<values.length; i++) {
 						values[i] = (byte) pt.upstream[i];
 					}
 					return;
