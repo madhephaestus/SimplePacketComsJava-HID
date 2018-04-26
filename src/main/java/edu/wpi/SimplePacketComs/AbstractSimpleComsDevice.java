@@ -14,6 +14,15 @@ public abstract class AbstractSimpleComsDevice {
 	ArrayList<PacketType> pollingQueue = new ArrayList<PacketType>();
 
 	private boolean virtual = false;
+	
+
+	public abstract int read(byte[] message, int howLongToWaitBeforeTimeout);
+
+	public abstract int write(byte[] message, int length, int howLongToWaitBeforeTimeout);
+
+	public abstract boolean disconnectDeviceImp();
+
+	public abstract boolean connectDeviceImp();
 
 	public void addPollingPacket(PacketType packet) {
 		for (PacketType q : pollingQueue) {
@@ -242,15 +251,6 @@ public abstract class AbstractSimpleComsDevice {
 	public void setVirtual(boolean virtual) {
 		this.virtual = virtual;
 	}
-
-	public abstract int read(byte[] message, int howLongToWaitBeforeTimeout);
-
-	public abstract int write(byte[] message, int length, int howLongToWaitBeforeTimeout);
-
-	public abstract boolean disconnectDeviceImp();
-
-	public abstract boolean connectDeviceImp();
-
 
 	
 
