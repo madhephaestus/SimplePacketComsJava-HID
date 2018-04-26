@@ -82,7 +82,7 @@ jar {
 
 group = "com.neuronrobotics"
 archivesBaseName = "SimplePacketComsJava"
-version = "0.0.3"
+version = "0.0.4"
 
 
 artifacts {
