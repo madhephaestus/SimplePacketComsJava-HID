@@ -249,6 +249,10 @@ public abstract class AbstractSimpleComsDevice {
 		// TODO Auto-generated method stub
 		return virtual;
 	}
+	
+	public void setVirtual(boolean virtual) {
+		this.virtual = virtual;
+	}
 
 	public abstract int read(byte[] message, int howLongToWaitBeforeTimeout);
 
@@ -258,56 +262,7 @@ public abstract class AbstractSimpleComsDevice {
 
 	public abstract boolean connectDeviceImp();
 
-	/*
-	 * { if(hidServices==null) hidServices = HidManager.getHidServices(); // Provide
-	 * a list of attached devices hidDevice=null; for (HidDevice h :
-	 * hidServices.getAttachedHidDevices()) { if(h.isVidPidSerial(vid, pid, null)){
-	 * hidDevice=h;
-	 * 
-	 * hidDevice.open(); System.out.println("Found! "+hidDevice);
-	 * 
-	 * } } HIDconnected=true; new Thread(){ public void run(){ //println
-	 * "Starting HID Thread" while(HIDconnected){ //println "loop" try{
-	 * Thread.sleep(1); if(pollingPacket!=null){ pollingPacket.done=false;
-	 * pollingPacket.started = false; process(pollingPacket); }
-	 * while(processQueue.size()>0){ try{ PacketType temPack =
-	 * processQueue.remove(0); if(temPack!=null){ //println "Processing "+temPack
-	 * process(temPack); } }catch(Exception e){ e.printStackTrace(); }
-	 * 
-	 * } }catch(Exception e){ e.printStackTrace(); }
-	 * 
-	 * 
-	 * } if(hidDevice !=null){ hidDevice.close(); } if(hidServices!=null){ // Clean
-	 * shutdown hidServices.shutdown(); } //println "HID device clean shutdown" }
-	 * }.start(); //throw new RuntimeException("No HID device found") return true; }
-	 * void setValues(int index,float position, float velocity, float force){
-	 * pollingPacket.downstream[(index*3)+0] = position;
-	 * pollingPacket.downstream[(index*3)+1] = velocity;
-	 * pollingPacket.downstream[(index*3)+2] = force; //println
-	 * "Setting Downstream "+downstream } void setPIDGains(int index,float kp, float
-	 * ki, float kd){
-	 * 
-	 * pidPacket.downstream[(index*3)+0] = kp; pidPacket.downstream[(index*3)+1] =
-	 * ki; pidPacket.downstream[(index*3)+2] = kd; //println
-	 * "Setting Downstream "+downstream } void pushPIDGains(){
-	 * pushPacket(pidPacket); } void setPDVelGains(int index,float kp, float kd){
-	 * 
-	 * PDVelPacket.downstream[(index*2)+0] = kp; PDVelPacket.downstream[(index*2)+1]
-	 * = kd; //println "Setting Downstream "+downstream } void pushPDVelGains(){
-	 * pushPacket(PDVelPacket); } void setVelocity(int index,float TPS){
-	 * SetVelocity.downstream[index] = TPS; //println
-	 * "Setting Downstream "+downstream } void pushVelocity(){
-	 * pushPacket(SetVelocity); } float [] getValues(int index){ float [] back = new
-	 * float [3];
-	 * 
-	 * back[0]=pollingPacket.upstream[(index*3)+0];
-	 * back[1]=pollingPacket.upstream[(index*3)+1];
-	 * back[2]=pollingPacket.upstream[(index*3)+2];
-	 * 
-	 * return back; }
-	 */
-	public void setVirtual(boolean virtual) {
-		this.virtual = virtual;
-	}
+
+	
 
 }
