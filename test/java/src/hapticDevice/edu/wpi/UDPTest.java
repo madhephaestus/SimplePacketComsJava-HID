@@ -1,4 +1,4 @@
-package hapticDevice;
+package hapticDevice.edu.wpi;
 
 import static org.junit.Assert.*;
 

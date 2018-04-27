@@ -49,9 +49,17 @@ artifacts {
     archives javadocJar
     archives sourcesJar
 }
+sourceSets {
+  test {
+    java.srcDir 'test/java/src'
+  }
+
+}
+
 
 mainClassName = ""
 dependencies {
+	testCompile 'junit:junit:4.10'
 
 }
 
@@ -136,4 +144,5 @@ uploadArchives {
 	  }
 	}
   }
-  */
+  
+*/
