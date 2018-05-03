@@ -43,7 +43,11 @@ public class UDPSimplePacketComs extends AbstractSimpleComsDevice {
 			byte[] bytes = name.getBytes();
 			for (int i = 0; i < namePacket.downstream.length && i < name.length(); i++)
 				namePacket.downstream[i] = bytes[i];
+		}else {
+			for (int i = 0; i < namePacket.downstream.length; i++)
+				namePacket.downstream[i] = (byte)0xFF;
 		}
+		
 		byte[] message = namePacket.command();
 		pinger.write(message, message.length, 1000);
 		for (int i = 0; i < 100; i++) {
