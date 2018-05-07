@@ -38,7 +38,7 @@ public class UDPSimplePacketComs extends AbstractSimpleComsDevice {
 		addrs.clear();
 		UDPSimplePacketComs pinger = new UDPSimplePacketComs(broadcast);
 		pinger.connect();
-		BytePacketType namePacket = new BytePacketType(1917, PACKET_SIZE);
+		BytePacketType namePacket = new BytePacketType(1776, PACKET_SIZE);
 		if (name != null) {
 			byte[] bytes = name.getBytes();
 			for (int i = 0; i < namePacket.downstream.length && i < name.length(); i++)
