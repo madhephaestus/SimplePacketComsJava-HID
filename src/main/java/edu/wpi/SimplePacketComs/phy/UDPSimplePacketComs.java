@@ -44,8 +44,8 @@ public class UDPSimplePacketComs extends AbstractSimpleComsDevice {
 			for (int i = 0; i < namePacket.downstream.length && i < name.length(); i++)
 				namePacket.downstream[i] = bytes[i];
 		}else {
-			for (int i = 0; i < namePacket.downstream.length; i++)
-				namePacket.downstream[i] = (byte)0xFF;
+			
+				namePacket.downstream[0] = new Byte((byte)'*');
 		}
 		
 		byte[] message = namePacket.command();

@@ -14,6 +14,8 @@ public abstract class PacketType{
 	public static int packetSize = 64;
 	protected int numberOfBytesPerValue = 4;
 	public int numValues = (packetSize / 4) - 1;
+	private boolean oneShotMode = false;
+	private boolean oneShotDone = false;
 	public PacketType(int id){
 		idOfCommand=id;
 	}
@@ -36,6 +38,18 @@ public abstract class PacketType{
 	}
 	public  byte[] command() {
 		return command( idOfCommand, downstream);
+	}
+	public void oneShotMode() {
+		oneShotMode =true;
+		oneShotDone = false;
+	}
+	public boolean sendOk() {
+		if(!oneShotMode)
+			return true;
+		if(!oneShotDone)
+			return true;
+		oneShotDone=true;
+		return false;
 	}
 
 	public abstract Number[] parse(byte[] bytes);

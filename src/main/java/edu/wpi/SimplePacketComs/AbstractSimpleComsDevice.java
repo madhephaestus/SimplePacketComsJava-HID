@@ -10,7 +10,6 @@ public abstract class AbstractSimpleComsDevice {
 	HashMap<Integer, ArrayList<Runnable>> events = new HashMap<>();
 	boolean connected = false;
 
-	ArrayList<PacketType> processQueue = new ArrayList<PacketType>();
 	ArrayList<PacketType> pollingQueue = new ArrayList<PacketType>();
 
 	private boolean virtual = false;
@@ -25,27 +24,19 @@ public abstract class AbstractSimpleComsDevice {
 	public abstract boolean connectDeviceImp();
 
 	public void addPollingPacket(PacketType packet) {
-		for (PacketType q : pollingQueue) {
-			if (q.idOfCommand == packet.idOfCommand) {
+		if(getPacket(  packet.idOfCommand)!=null)
 				throw new RuntimeException(
 						"Only one packet of a given ID is allowed to poll. Add an event to recive data");
-			}
-		}
+		
 		pollingQueue.add(packet);
 	}
-
-	public void pushPacket(PacketType packet) {
-		packet.done = false;
-		packet.started = false;
-		processQueue.add(packet);
-		while (packet.done == false) {
-			try {
-				Thread.sleep(1);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+	private PacketType getPacket( int ID) {
+		for (PacketType q : pollingQueue) {
+			if (q.idOfCommand == ID) {
+				return q;
 			}
 		}
+		return null;
 	}
 
 	public void removeEvent(Integer id, Runnable event) {
@@ -205,20 +196,8 @@ public abstract class AbstractSimpleComsDevice {
 					// println "loop"
 					try {
 						for (PacketType pollingPacket : pollingQueue) {
-							process(pollingPacket);
-						}
-						while (processQueue.size() > 0) {
-							try {
-								PacketType temPack = processQueue.get(0);
-								if (temPack != null) {
-									// println "Processing "+temPack
-									process(temPack);
-									processQueue.remove(0);
-								}
-							} catch (Exception e) {
-								e.printStackTrace();
-							}
-
+							if(pollingPacket.sendOk())
+								process(pollingPacket);
 						}
 					} catch (Exception e) {
 						e.printStackTrace();
