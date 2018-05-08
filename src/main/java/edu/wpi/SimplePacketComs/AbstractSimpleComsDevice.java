@@ -92,11 +92,12 @@ public abstract class AbstractSimpleComsDevice {
 
 				if (pt.idOfCommand == id) {
 					for (int i = 0; i < pt.upstream.length && i<values.length; i++) {
-						values[i] = (double) pt.upstream[i];
+						float d =  (float) pt.upstream[i];
+						values[i] = d;
 					}
 					return;
 				}
-		}
+		}	
 	}
 
 	public void readBytes(int id, byte[] values) {
