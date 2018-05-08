@@ -43,12 +43,17 @@ public abstract class PacketType{
 		oneShotMode =true;
 		oneShotDone = false;
 	}
+	public void pollingMode() {
+		oneShotMode =false;
+		oneShotDone = false;
+	}
 	public boolean sendOk() {
-		if(!oneShotMode)
+		if(oneShotMode==false)
 			return true;
-		if(!oneShotDone)
+		if(oneShotDone==false) {
+			oneShotDone=true;
 			return true;
-		oneShotDone=true;
+		}
 		return false;
 	}
 

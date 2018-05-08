@@ -211,7 +211,7 @@ public abstract class AbstractSimpleComsDevice {
 						connected = false;
 					}
 				}
-				disconnect();
+				disconnectDeviceImp();
 			}
 		}.start();
 		// throw new RuntimeException("No HID device found")
@@ -220,7 +220,6 @@ public abstract class AbstractSimpleComsDevice {
 
 	public void disconnect() {
 		connected = false;
-		disconnectDeviceImp();
 	}
 
 	private boolean isVirtual() {
