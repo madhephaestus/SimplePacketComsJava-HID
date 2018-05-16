@@ -2,8 +2,8 @@ package edu.wpi.SimplePacketComs.device;
 
 import java.net.InetAddress;
 
+import edu.wpi.SimplePacketComs.BytePacketType;
 import edu.wpi.SimplePacketComs.PacketType;
-import edu.wpi.SimplePacketComs.bytepacket.BytePacketType;
 import edu.wpi.SimplePacketComs.phy.UDPSimplePacketComs;
 
 public abstract class UdpDevice implements Device{

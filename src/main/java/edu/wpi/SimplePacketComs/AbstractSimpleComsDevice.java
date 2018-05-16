@@ -3,9 +3,6 @@ package edu.wpi.SimplePacketComs;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import edu.wpi.SimplePacketComs.bytepacket.BytePacketType;
-import edu.wpi.SimplePacketComs.floatpacket.FloatPacketType;
-
 public abstract class AbstractSimpleComsDevice {
 	HashMap<Integer, ArrayList<Runnable>> events = new HashMap<>();
 	boolean connected = false;

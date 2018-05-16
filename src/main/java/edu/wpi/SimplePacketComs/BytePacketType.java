@@ -1,7 +1,6 @@
-package edu.wpi.SimplePacketComs.bytepacket;
+package edu.wpi.SimplePacketComs;
 
 import java.nio.ByteBuffer;
-import edu.wpi.SimplePacketComs.PacketType;
 
 public class BytePacketType extends PacketType {
 	private final byte[] message;

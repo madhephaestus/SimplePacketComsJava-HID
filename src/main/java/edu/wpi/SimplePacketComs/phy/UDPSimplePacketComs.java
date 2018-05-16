@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 
 import edu.wpi.SimplePacketComs.AbstractSimpleComsDevice;
-import edu.wpi.SimplePacketComs.bytepacket.BytePacketType;
+import edu.wpi.SimplePacketComs.BytePacketType;
 
 public class UDPSimplePacketComs extends AbstractSimpleComsDevice {
 	private static final byte[] BROADCAST = new byte[] { (byte) 255, (byte) 255, (byte) 255, (byte) 255 };

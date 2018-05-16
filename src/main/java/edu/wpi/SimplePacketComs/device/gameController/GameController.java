@@ -5,8 +5,8 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
+import edu.wpi.SimplePacketComs.BytePacketType;
 import edu.wpi.SimplePacketComs.PacketType;
-import edu.wpi.SimplePacketComs.bytepacket.BytePacketType;
 import edu.wpi.SimplePacketComs.device.UdpDevice;
 import edu.wpi.SimplePacketComs.phy.UDPSimplePacketComs;
 

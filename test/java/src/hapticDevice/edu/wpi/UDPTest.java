@@ -9,8 +9,8 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import edu.wpi.SimplePacketComs.bytepacket.BytePacketType;
-import edu.wpi.SimplePacketComs.floatpacket.FloatPacketType;
+import edu.wpi.SimplePacketComs.BytePacketType;
+import edu.wpi.SimplePacketComs.FloatPacketType;
 import edu.wpi.SimplePacketComs.phy.UDPSimplePacketComs;
 
 public class UDPTest {

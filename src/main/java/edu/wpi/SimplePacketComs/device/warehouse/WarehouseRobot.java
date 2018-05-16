@@ -8,10 +8,10 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.DoubleStream;
 
+import edu.wpi.SimplePacketComs.BytePacketType;
+import edu.wpi.SimplePacketComs.FloatPacketType;
 import edu.wpi.SimplePacketComs.PacketType;
-import edu.wpi.SimplePacketComs.bytepacket.BytePacketType;
 import edu.wpi.SimplePacketComs.device.UdpDevice;
-import edu.wpi.SimplePacketComs.floatpacket.FloatPacketType;
 import edu.wpi.SimplePacketComs.phy.UDPSimplePacketComs;
 
 public class WarehouseRobot extends UdpDevice  {

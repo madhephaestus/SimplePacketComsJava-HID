@@ -1,7 +1,6 @@
-package edu.wpi.SimplePacketComs.floatpacket;
+package edu.wpi.SimplePacketComs;
 
 import java.nio.ByteBuffer;
-import edu.wpi.SimplePacketComs.PacketType;
 
 public class FloatPacketType extends PacketType {
 	private final Number[] returnValues;
