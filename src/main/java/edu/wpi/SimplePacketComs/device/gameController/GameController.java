@@ -17,10 +17,10 @@ public class GameController extends UdpDevice{
 
 	private GameController(InetAddress add) throws Exception {
 		super(add);
-		udpdevice.addPollingPacket(gamestate);
-		udpdevice.addEvent(gamestate.idOfCommand, () -> {
-			udpdevice.readBytes(gamestate.idOfCommand, getData());
-			udpdevice.writeBytes(gamestate.idOfCommand, getStatus());
+		addPollingPacket(gamestate);
+		addEvent(gamestate.idOfCommand, () -> {
+			readBytes(gamestate.idOfCommand, getData());
+			writeBytes(gamestate.idOfCommand, getStatus());
 		});
 	}
 	public static List<GameController> get(String name) throws Exception {

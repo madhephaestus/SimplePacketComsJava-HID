@@ -30,17 +30,17 @@ public class WarehouseRobot extends UdpDevice  {
 		super(add);
 		
 		for (PacketType pt : Arrays.asList(clearFaults, pickOrder, getStatus, directDrive, getLocation)) {
-			udpdevice.addPollingPacket(pt);
+			addPollingPacket(pt);
 		}
 
-		udpdevice.addEvent(getStatus.idOfCommand, () -> {
-			udpdevice.readBytes(getStatus.idOfCommand, status);
+		addEvent(getStatus.idOfCommand, () -> {
+			readBytes(getStatus.idOfCommand, status);
 		});
-		udpdevice.addEvent(directDrive.idOfCommand, () -> {
-			udpdevice.readFloats(directDrive.idOfCommand, driveStatus);
+		addEvent(directDrive.idOfCommand, () -> {
+			readFloats(directDrive.idOfCommand, driveStatus);
 		});
-		udpdevice.addEvent(getLocation.idOfCommand, () -> {
-			udpdevice.readFloats(getLocation.idOfCommand, locationData);
+		addEvent(getLocation.idOfCommand, () -> {
+			readFloats(getLocation.idOfCommand, locationData);
 			double rotationAngleRadians = Math.PI / 180 * locationData[3];// azimuth	
 
 			getLocationAffine().setMxx(Math.cos(rotationAngleRadians));
@@ -108,7 +108,7 @@ public class WarehouseRobot extends UdpDevice  {
 		pickOrderData[3]=dropoffArea;
 		pickOrderData[4]=dropoffX;
 		pickOrderData[5]=dropoffZ;
-		udpdevice.writeFloats(pickOrder.idOfCommand, pickOrderData);
+		writeFloats(pickOrder.idOfCommand, pickOrderData);
 		pickOrder.oneShotMode();
 
 	}
@@ -126,7 +126,7 @@ public class WarehouseRobot extends UdpDevice  {
 		driveData[6]=milisecondsTransition;
 		driveData[7]=(double)(Math.round(Math.random()*100000.0));// random session value do demarkate delta motion sessions
 
-		udpdevice.writeFloats(directDrive.idOfCommand, driveData);
+		writeFloats(directDrive.idOfCommand, driveData);
 		
 	}
 	

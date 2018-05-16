@@ -6,41 +6,24 @@ import edu.wpi.SimplePacketComs.BytePacketType;
 import edu.wpi.SimplePacketComs.PacketType;
 import edu.wpi.SimplePacketComs.phy.UDPSimplePacketComs;
 
-public abstract class UdpDevice implements Device{
+public abstract class UdpDevice extends UDPSimplePacketComs  implements Device{
 	private PacketType getName = new BytePacketType(1776, 64);
 	private InetAddress address;
-	protected UDPSimplePacketComs udpdevice;	
 	private byte[] name = new byte[60];
 
 	public 	UdpDevice(InetAddress add) throws Exception {
+		super(add);
 		this.address=add;
-		udpdevice = new UDPSimplePacketComs(address);
 		getName.downstream[0]=(byte)'*';// read name
 		
-		udpdevice.addEvent(getName.idOfCommand, () -> {
-			udpdevice.readBytes(getName.idOfCommand, name);// read name
+		addEvent(getName.idOfCommand, () -> {
+			readBytes(getName.idOfCommand, name);// read name
 		});			
-		udpdevice.addPollingPacket(getName);
+		addPollingPacket(getName);
 		getName.oneShotMode();
 
 	}
-	/**
-	 * This method tells the connection object to disconnect its pipes and close out
-	 * the connection. Once this is called, it is safe to remove your device.
-	 */
 
-	public void disconnect() {
-		udpdevice.disconnect();
-	}
-
-	/**
-	 * Connect device imp.
-	 *
-	 * @return true, if successful
-	 */
-	public boolean connect() {
-		return udpdevice.connect();
-	}
 	public InetAddress getAddress() {
 		return address;
 	}
