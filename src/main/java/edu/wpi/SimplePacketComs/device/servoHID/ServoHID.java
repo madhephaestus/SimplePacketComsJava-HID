@@ -1,4 +1,4 @@
-package edu.wpi.SimplePacketComs.device.gameController;
+package edu.wpi.SimplePacketComs.device.servoHID;
 
 import edu.wpi.SimplePacketComs.BytePacketType;
 import edu.wpi.SimplePacketComs.PacketType;
