@@ -1,7 +1,5 @@
 package edu.wpi.SimplePacketComs;
 
-import java.nio.ByteBuffer;
-
 public class BytePacketType extends PacketType {
 	private final byte[] message;
 	private final Number[] returnValues;

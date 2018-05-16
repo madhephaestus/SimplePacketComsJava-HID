@@ -113,8 +113,6 @@ public abstract class AbstractSimpleComsDevice {
 		packet.started = true;
 		try {
 			if (!isVirtual()) {
-				// println "Writing packet"
-				long start = System.currentTimeMillis();
 				try {
 					byte[] message = packet.command(packet.idOfCommand, packet.downstream);
 					// println "Writing: "+ message
