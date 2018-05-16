@@ -60,7 +60,7 @@ sourceSets {
 mainClassName = ""
 dependencies {
 	testCompile 'junit:junit:4.10'
-
+	compile 'org.hid4java:hid4java:0.5.0'
 }
 
 Date buildTimeAndDate = new Date()
@@ -90,7 +90,7 @@ jar {
 
 group = "com.neuronrobotics"
 archivesBaseName = "SimplePacketComsJava"
-version = "0.0.4"
+version = "0.0.9"
 
 
 artifacts {
