@@ -24,7 +24,7 @@ public class HephaestusArm extends HIDSimplePacketComs{
 			addPollingPacket(pt);
 		}
 	}
-	public void addEvent(Runnable event) {
+	public void addPollingPacketEvent(Runnable event) {
 		addEvent(pollingPacket.idOfCommand, event);
 	}
 	public void setValuesevent(int index,float position, float velocity, float force){
