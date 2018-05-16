@@ -24,7 +24,10 @@ public class HephaestusArm extends HIDSimplePacketComs{
 			addPollingPacket(pt);
 		}
 	}
-	public void setValues(int index,float position, float velocity, float force){
+	public void addEvent(Runnable event) {
+		addEvent(pollingPacket.idOfCommand, event);
+	}
+	public void setValuesevent(int index,float position, float velocity, float force){
 		pollingPacket.downstream[(index*3)+0] = position;
 		pollingPacket.downstream[(index*3)+1] = velocity;
 		pollingPacket.downstream[(index*3)+2] = force;
@@ -65,6 +68,10 @@ public class HephaestusArm extends HIDSimplePacketComs{
 		
 		return back;
 	}
+	public double getPosition(int index) {
+		return pollingPacket.upstream[(index*3)+0].doubleValue();
+	}
+	
 	public Number[] getRawValues(){
 		return pollingPacket.upstream;
 	}
