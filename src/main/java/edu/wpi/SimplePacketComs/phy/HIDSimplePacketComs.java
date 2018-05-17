@@ -1,5 +1,7 @@
 package edu.wpi.SimplePacketComs.phy;
 
+import java.util.ArrayList;
+
 import org.hid4java.HidDevice;
 import org.hid4java.HidManager;
 import org.hid4java.HidServices;
@@ -9,9 +11,10 @@ import edu.wpi.SimplePacketComs.AbstractSimpleComsDevice;
 public class HIDSimplePacketComs extends AbstractSimpleComsDevice {
 	private int vid = 0;
 	private int pid = 0;
-	private HidServices hidServices = null;
-	private HidDevice hidDevice = null;
+	private static HidServices hidServices = null;
+	private static ArrayList<HIDSimplePacketComs> connected = new ArrayList<>();
 
+	private HidDevice hidDevice = null;
 	public HIDSimplePacketComs(int vidIn, int pidIn) {
 		// constructor
 		vid = vidIn;
@@ -34,10 +37,14 @@ public class HIDSimplePacketComs extends AbstractSimpleComsDevice {
 		if (hidDevice != null) {
 			hidDevice.close();
 		}
-		if (hidServices != null) {
-			// Clean shutdown
-			hidServices.shutdown();
-		}
+		if(connected.contains(this))
+			connected.remove(this);
+		if(connected.size()==0)
+			if (hidServices != null) {
+				// Clean shutdown
+				hidServices.shutdown();
+				hidServices = null;
+			}
 		System.out.println("HID device clean shutdown");
 		return false;
 	}
@@ -53,8 +60,8 @@ public class HIDSimplePacketComs extends AbstractSimpleComsDevice {
 			if (h.isVidPidSerial(vid, pid, null)) {
 				if (hidDevice == null) {
 					hidDevice = h;
-
 					hidDevice.open();
+					connected.add(this);
 					System.out.println("Found! " + hidDevice);
 					return true;
 				} else {
