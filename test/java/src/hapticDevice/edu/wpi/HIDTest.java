@@ -19,6 +19,7 @@ public class HIDTest {
 		}
 		Thread.sleep(100);
 		arm.disconnect();
+		Thread.sleep(100);
 	}
 
 }

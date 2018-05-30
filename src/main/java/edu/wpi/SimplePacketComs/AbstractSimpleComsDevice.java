@@ -160,6 +160,7 @@ public abstract class AbstractSimpleComsDevice {
 			// println "updaing "+upstream+" downstream "+downstream
 
 			if (events.get(packet.idOfCommand) != null) {
+				
 				for (Runnable e : events.get(packet.idOfCommand)) {
 					if (e != null) {
 						try {
@@ -171,7 +172,7 @@ public abstract class AbstractSimpleComsDevice {
 				}
 			}
 		} catch (Throwable t) {
-			t.printStackTrace(System.out);
+			//t.printStackTrace(System.out);
 		}
 		packet.done = true;
 	}
@@ -217,7 +218,7 @@ public abstract class AbstractSimpleComsDevice {
 		connected = false;
 	}
 
-	private boolean isVirtual() {
+	public boolean isVirtual() {
 		// TODO Auto-generated method stub
 		return virtual;
 	}
