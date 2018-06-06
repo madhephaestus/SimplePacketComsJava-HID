@@ -19,7 +19,7 @@ public abstract class AbstractSimpleComsDevice {
 	public abstract boolean disconnectDeviceImp();
 
 	public abstract boolean connectDeviceImp();
-
+	private int readTimeout = 100;
 	public void addPollingPacket(PacketType packet) {
 		if(getPacket(  packet.idOfCommand)!=null)
 				throw new RuntimeException(
@@ -118,7 +118,7 @@ public abstract class AbstractSimpleComsDevice {
 					// println "Writing: "+ message
 					int val = write(message, message.length, 1);
 					if (val > 0) {
-						int read = read(message, 1000);
+						int read = read(message, getReadTimeout());
 						if (read >= packet.upstream.length) {
 							// println "Parsing packet"
 							// println "read: "+ message
@@ -177,6 +177,11 @@ public abstract class AbstractSimpleComsDevice {
 		packet.done = true;
 	}
 
+	private int getReadTimeout() {
+		
+		return readTimeout;
+	}
+
 	public boolean connect() {
 		if (connectDeviceImp()) {
 			setVirtual(false);
@@ -225,6 +230,10 @@ public abstract class AbstractSimpleComsDevice {
 	
 	public void setVirtual(boolean virtual) {
 		this.virtual = virtual;
+	}
+
+	public void setReadTimeout(int readTimeout) {
+		this.readTimeout = readTimeout;
 	}
 
 	
