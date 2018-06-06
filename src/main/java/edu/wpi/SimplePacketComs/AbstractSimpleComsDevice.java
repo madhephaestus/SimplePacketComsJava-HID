@@ -140,7 +140,7 @@ public abstract class AbstractSimpleComsDevice {
 								return;
 							}
 						} else {
-							System.out.println("Read failed");
+							//System.out.println("Read failed");
 							return;
 						}
 
