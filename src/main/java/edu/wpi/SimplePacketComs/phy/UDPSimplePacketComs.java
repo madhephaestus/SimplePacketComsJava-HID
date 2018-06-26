@@ -6,6 +6,7 @@ import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.SocketException;
 import java.net.SocketTimeoutException;
+import java.util.HashMap;
 import java.util.HashSet;
 
 import edu.wpi.SimplePacketComs.AbstractSimpleComsDevice;
@@ -17,11 +18,12 @@ public class UDPSimplePacketComs extends AbstractSimpleComsDevice {
 	private InetAddress address;
 	private static InetAddress broadcast;
 	private static final HashSet<InetAddress> addrs = new HashSet<>();
+	private static final HashMap<InetAddress,String> names=new HashMap<>();
 	private DatagramSocket udpSock;
 	private byte[] receiveData = new byte[PACKET_SIZE];
 	private static final int port = 1865;
 	private DatagramPacket receivePacket = new DatagramPacket(receiveData, PACKET_SIZE);
-	private String name;
+
 
 	public UDPSimplePacketComs(InetAddress address) throws Exception {
 		this.address = address;
@@ -74,13 +76,21 @@ public class UDPSimplePacketComs extends AbstractSimpleComsDevice {
 			ex.printStackTrace();
 			return 0;
 		}
-		addrs.add(receivePacket.getAddress());
+		
 		int len = receivePacket.getLength();
 		byte[] data = receivePacket.getData();
 		for (int i = 0; i < len; i++) {
 			message[i] = data[i];
 		}
-
+		if(!addrs.contains(receivePacket.getAddress())) {
+			addrs.add(receivePacket.getAddress());
+			byte[] namedata=new byte[data.length-4];
+			for (int i = 0; i < namedata.length; i++) {
+				namedata[i] = data[i+4];
+			}
+			String name = new String(namedata).trim();
+			names.put(receivePacket.getAddress(), name);
+		}
 		return len;
 	}
 
@@ -115,13 +125,13 @@ public class UDPSimplePacketComs extends AbstractSimpleComsDevice {
 		}
 		return true;
 	}
-
+	@Override
 	public String getName() {
-		return name;
+		return names.get(address);
 	}
-
+	@Override
 	public void setName(String name) {
-		this.name = name;
+		// this is a value read from the device
 	}
 
 }
