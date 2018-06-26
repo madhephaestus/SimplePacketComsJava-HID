@@ -17,7 +17,7 @@ public abstract class AbstractSimpleComsDevice {
 	public abstract int write(byte[] message, int length, int howLongToWaitBeforeTimeout);
 
 	public abstract boolean disconnectDeviceImp();
-
+	private String name = "SimpleComsDevice";
 	public abstract boolean connectDeviceImp();
 	private int readTimeout = 100;
 	public void addPollingPacket(PacketType packet) {
@@ -234,6 +234,14 @@ public abstract class AbstractSimpleComsDevice {
 
 	public void setReadTimeout(int readTimeout) {
 		this.readTimeout = readTimeout;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	
