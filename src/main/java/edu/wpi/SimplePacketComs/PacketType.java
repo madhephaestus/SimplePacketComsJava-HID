@@ -43,6 +43,10 @@ public abstract class PacketType{
 		oneShotMode =true;
 		oneShotDone = false;
 	}
+	public void waitToSendMode() {
+		oneShotMode =true;
+		oneShotDone = true;
+	}
 	public void pollingMode() {
 		oneShotMode =false;
 		oneShotDone = false;
