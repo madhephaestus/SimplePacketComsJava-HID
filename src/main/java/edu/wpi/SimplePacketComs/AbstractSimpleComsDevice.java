@@ -20,6 +20,7 @@ public abstract class AbstractSimpleComsDevice {
 	private String name = "SimpleComsDevice";
 	public abstract boolean connectDeviceImp();
 	private int readTimeout = 100;
+	private boolean isTimedOut  =false;
 	public void addPollingPacket(PacketType packet) {
 		if(getPacket(  packet.idOfCommand)!=null)
 				throw new RuntimeException(
@@ -120,6 +121,7 @@ public abstract class AbstractSimpleComsDevice {
 					if (val > 0) {
 						int read = read(message, getReadTimeout());
 						if (read >= packet.upstream.length) {
+							isTimedOut=false;
 							// println "Parsing packet"
 							// println "read: "+ message
 							int ID = PacketType.getId(message);
@@ -141,6 +143,7 @@ public abstract class AbstractSimpleComsDevice {
 							}
 						} else {
 							//System.out.println("Read failed");
+							isTimedOut=true;
 							return;
 						}
 
@@ -242,6 +245,14 @@ public abstract class AbstractSimpleComsDevice {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public boolean isTimedOut() {
+		return isTimedOut;
+	}
+
+	public void setTimedOut(boolean isTimedOut) {
+		this.isTimedOut = isTimedOut;
 	}
 
 	
