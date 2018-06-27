@@ -57,10 +57,8 @@ public class WarehouseRobot extends UdpDevice  {
 			getLocationAffine().setTz(locationData[2]);
 			
 		});
-		pickOrder.oneShotMode();
-		pickOrder.sendOk();// remove the first call here
-		clearFaults.oneShotMode();
-		clearFaults.sendOk();// remove the first call here
+		pickOrder.waitToSendMode();
+		clearFaults.waitToSendMode();
 		
 		
 		
@@ -82,7 +80,7 @@ public class WarehouseRobot extends UdpDevice  {
 	}
 	
 	public static List<WarehouseRobot> get() throws Exception {
-		return get("*");
+		return get("Warehouse*");
 	}
 
 	@Override

@@ -216,6 +216,7 @@ public abstract class AbstractSimpleComsDevice {
 					}
 				}
 				disconnectDeviceImp();
+				System.out.println("SimplePacketComs disconnect");
 			}
 		}.start();
 		// throw new RuntimeException("No HID device found")

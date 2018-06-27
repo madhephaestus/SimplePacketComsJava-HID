@@ -29,6 +29,6 @@ public abstract class UdpDevice extends UDPSimplePacketComs  implements Device{
 	}
 
 	public String getName() {
-		return (getAddress().getHostAddress()+"-"+new String(name)).trim();
+		return (new String(name)).trim();
 	}
 }
