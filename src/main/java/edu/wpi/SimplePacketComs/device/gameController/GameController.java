@@ -39,7 +39,7 @@ public class GameController extends UdpDevice{
 		return robots;
 	}
 	public static List<GameController> get() throws Exception {
-		return get("*");
+		return get("GameController*");
 	}
 	public byte[] getStatus() {
 		return status;

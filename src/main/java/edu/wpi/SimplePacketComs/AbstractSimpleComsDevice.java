@@ -121,11 +121,11 @@ public abstract class AbstractSimpleComsDevice {
 					if (val > 0) {
 						int read = read(message, getReadTimeout());
 						if (read >= packet.upstream.length) {
-							isTimedOut=false;
 							// println "Parsing packet"
 							// println "read: "+ message
 							int ID = PacketType.getId(message);
 							if (ID == packet.idOfCommand) {
+								isTimedOut=false;
 								Number[] up = packet.parse(message);
 								for (int i = 0; i < packet.upstream.length; i++) {
 									packet.upstream[i] = up[i];
@@ -250,10 +250,6 @@ public abstract class AbstractSimpleComsDevice {
 
 	public boolean isTimedOut() {
 		return isTimedOut;
-	}
-
-	public void setTimedOut(boolean isTimedOut) {
-		this.isTimedOut = isTimedOut;
 	}
 
 	
