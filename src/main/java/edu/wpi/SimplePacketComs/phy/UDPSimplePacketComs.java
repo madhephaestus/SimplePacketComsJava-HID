@@ -63,7 +63,7 @@ public class UDPSimplePacketComs extends AbstractSimpleComsDevice {
 
 		try {
 			udpSock.setSoTimeout(howLongToWaitBeforeTimeout);
-		} catch (SocketException e) {
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} // Timeout the socket after 1 ms

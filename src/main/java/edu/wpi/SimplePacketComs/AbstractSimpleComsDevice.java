@@ -125,6 +125,9 @@ public abstract class AbstractSimpleComsDevice {
 							// println "read: "+ message
 							int ID = PacketType.getId(message);
 							if (ID == packet.idOfCommand) {
+								if(isTimedOut) {
+									System.out.println("Timout resolved "+ID);
+								}
 								isTimedOut=false;
 								Number[] up = packet.parse(message);
 								for (int i = 0; i < packet.upstream.length; i++) {
@@ -132,17 +135,21 @@ public abstract class AbstractSimpleComsDevice {
 								}
 								// System.out.println("Took "+(System.currentTimeMillis()-start));
 							} else {
-								System.out.print("\r\nCross Talk " + ID + " expected " + packet.idOfCommand + " ");
-								for (int i = 0; i < 8; i++) {
-									System.out.print(message[i] + " ");
+								//readTimeout=readTimeout+(readTimeout/2);
+
+								//System.out.print("\r\nCross Talk expected " + packet.idOfCommand + " Got: " + ID+" waiting "+readTimeout);
+								
+								for (int i = 0; i < 3; i++) {
+									read(message, getReadTimeout());// clear any possible stuck messages
 
 								}
 								System.out.println(" ");
-
+								isTimedOut=true;
 								return;
 							}
 						} else {
 							//System.out.println("Read failed");
+							//readTimeout=readTimeout+(readTimeout/2);
 							isTimedOut=true;
 							return;
 						}
