@@ -15,13 +15,14 @@ import edu.wpi.SimplePacketComs.device.UdpDevice;
 import edu.wpi.SimplePacketComs.phy.UDPSimplePacketComs;
 
 public class WarehouseRobot extends UdpDevice  {
+	private PacketType estop = new BytePacketType(1989, 64);
 	private PacketType getStatus = new BytePacketType(2012, 64);
 	private PacketType clearFaults = new BytePacketType(1871, 64);
 	private PacketType pickOrder = new FloatPacketType(1936, 64);
 	private PacketType getLocation = new FloatPacketType(1994, 64);
 	private PacketType directDrive = new FloatPacketType(1786, 64);
 	private byte[] status = new byte[1];
-	private double[] pickOrderData = new double[6];
+	private double[] pickOrderData = new double[3];
 	private double[] locationData = new double[8];
 	private double[] driveData = new double[8];
 	private double[] driveStatus = new double[1];
@@ -29,7 +30,7 @@ public class WarehouseRobot extends UdpDevice  {
 	private WarehouseRobot(InetAddress add) throws Exception {
 		super(add);
 		
-		for (PacketType pt : Arrays.asList(clearFaults, pickOrder, getStatus, directDrive, getLocation)) {
+		for (PacketType pt : Arrays.asList(clearFaults, pickOrder, getStatus, directDrive, getLocation,estop)) {
 			addPollingPacket(pt);
 		}
 
@@ -59,7 +60,7 @@ public class WarehouseRobot extends UdpDevice  {
 		});
 		pickOrder.waitToSendMode();
 		clearFaults.waitToSendMode();
-		
+		estop.waitToSendMode();
 		
 		
 	}
@@ -94,18 +95,17 @@ public class WarehouseRobot extends UdpDevice  {
 
 	}
 
-
+	public void estop() {
+		estop.oneShotMode();
+	}
 	public double getDriveStatus() {
 		return driveStatus[0];
 	}
 	
-	public void pickOrder(double pickupArea, double pickupX,double pickupZ,double dropoffArea, double dropoffX,double dropoffZ) {
-		pickOrderData[0]=pickupArea;
-		pickOrderData[1]=pickupX;
-		pickOrderData[2]=pickupZ;
-		pickOrderData[3]=dropoffArea;
-		pickOrderData[4]=dropoffX;
-		pickOrderData[5]=dropoffZ;
+	public void pickOrder(double material, double angle,double dropLocation) {
+		pickOrderData[0]=material;
+		pickOrderData[1]=angle;
+		pickOrderData[2]=dropLocation;
 		writeFloats(pickOrder.idOfCommand, pickOrderData);
 		pickOrder.oneShotMode();
 
