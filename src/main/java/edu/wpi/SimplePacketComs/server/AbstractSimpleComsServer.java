@@ -14,14 +14,9 @@ public abstract class AbstractSimpleComsServer implements Device,IPhysicalLayer 
 	boolean connected = false;
 	private byte[] data=null;
 	
-	public void addServer(int i, IOnPacketEvent iOnBytePacketEvent) {
-		servers.put(i,iOnBytePacketEvent);
-		if(IOnBytePacketEvent.class.isInstance(iOnBytePacketEvent)) {
-			packets.put(iOnBytePacketEvent, new BytePacketType(i, getPacketSize()));
-		}
-		if(IOnFloatPacketEvent.class.isInstance(iOnBytePacketEvent)) {
-			packets.put(iOnBytePacketEvent, new FloatPacketType(i, getPacketSize()));
-		}
+	public void addServer(PacketType packet, IOnPacketEvent iOnBytePacketEvent) {
+		servers.put(packet.idOfCommand,iOnBytePacketEvent);
+		packets.put(iOnBytePacketEvent, packet);
 	}
 	@Override
 	public boolean connect() {

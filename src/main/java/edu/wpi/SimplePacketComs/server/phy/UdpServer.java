@@ -4,8 +4,6 @@ import edu.wpi.SimplePacketComs.BytePacketType;
 import edu.wpi.SimplePacketComs.PacketType;
 import edu.wpi.SimplePacketComs.phy.UDPSimplePacketComs;
 import edu.wpi.SimplePacketComs.server.AbstractSimpleComsServer;
-import edu.wpi.SimplePacketComs.server.IOnBytePacketEvent;
-import edu.wpi.SimplePacketComs.server.IOnPacketEvent;
 
 public class UdpServer extends AbstractSimpleComsServer{
 	private UDPSimplePacketComs device=new UDPSimplePacketComs();
@@ -13,25 +11,22 @@ public class UdpServer extends AbstractSimpleComsServer{
 	
 	public UdpServer(String name) {
 		this.name=name;
-		addServer(1776,new IOnBytePacketEvent() {
-			@Override
-			public boolean event(Byte[] packet) {
-				byte[] data = name.getBytes();
-				for(int i=0;i<data.length;i++) {
-					if(packet[i].byteValue() =='*') {
-						for( i=0;i<data.length;i++) {
-							// Copy in our name completly
-							packet[i]=data[i];
-						}
-						return true;
+		addServer(new BytePacketType(1776, 64),packet -> {
+			byte[] data = name.getBytes();
+			for(int i=0;i<data.length;i++) {
+				if(packet[i].byteValue() =='*') {
+					for( i=0;i<data.length;i++) {
+						// Copy in our name completly
+						packet[i]=data[i];
 					}
-					if(packet[i]!=data[i]) {
-						return false;// failed the name check
-					}
+					return true;
 				}
-				// pass the name check
-				return true;
+				if(packet[i].byteValue()!=data[i]) {
+					return false;// failed the name check
+				}
 			}
+			// pass the name check
+			return true;
 		});
 		
 	}
