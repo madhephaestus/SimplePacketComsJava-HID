@@ -12,7 +12,7 @@ public class GameControllerServerTest {
 	GameControllerServer server=null;
 	@Before
 	public void setUp() throws Exception {
-		server=new GameControllerServer("GameController_37", 2);
+		server=new GameControllerServer("GameController_22", 2);
 		server.connect();
 	}
 

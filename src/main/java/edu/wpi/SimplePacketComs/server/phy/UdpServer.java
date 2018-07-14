@@ -22,6 +22,13 @@ public class UdpServer extends AbstractSimpleComsServer{
 					return true;
 				}
 				if(packet[i].byteValue()!=data[i]) {
+					byte[] dataforString = new byte[60];
+					for(int j=0;j<data.length;j++) {
+						if(packet[j].byteValue()==0)
+							break;
+						dataforString[j]=packet[j].byteValue();
+					}
+					System.out.println("Failed name check, got: "+new String(dataforString).trim()+" expected "+name);
 					return false;// failed the name check
 				}
 			}

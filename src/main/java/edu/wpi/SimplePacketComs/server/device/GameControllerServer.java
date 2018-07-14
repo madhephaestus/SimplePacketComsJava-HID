@@ -20,6 +20,7 @@ public class GameControllerServer extends UdpServer {
 			for(int i=0;i<getControllerData().length;i++) {
 				packet[i]=(byte)getControllerData()[i];
 			}
+			//System.out.println("Data");
 			return true;
 		});
 	}
