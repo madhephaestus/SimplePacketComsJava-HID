@@ -4,5 +4,6 @@ public interface Device {
 	
 	public boolean connect();
 	public void disconnect();
+	public String getName();
 	
 }

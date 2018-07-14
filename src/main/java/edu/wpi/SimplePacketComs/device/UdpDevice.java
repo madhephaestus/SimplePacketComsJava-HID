@@ -14,7 +14,7 @@ public abstract class UdpDevice extends UDPSimplePacketComs  implements Device{
 	public 	UdpDevice(InetAddress add) throws Exception {
 		super(add);
 		this.address=add;
-		getName.downstream[0]=(byte)'*';// read name
+		getName.getDownstream()[0]=(byte)'*';// read name
 		
 		addEvent(getName.idOfCommand, () -> {
 			readBytes(getName.idOfCommand, name);// read name

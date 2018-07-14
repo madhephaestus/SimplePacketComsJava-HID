@@ -3,22 +3,24 @@ package edu.wpi.SimplePacketComs;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public abstract class AbstractSimpleComsDevice {
+import edu.wpi.SimplePacketComs.device.Device;
+
+public abstract class AbstractSimpleComsDevice implements Device,IPhysicalLayer{
 	HashMap<Integer, ArrayList<Runnable>> events = new HashMap<>();
 	boolean connected = false;
 
 	ArrayList<PacketType> pollingQueue = new ArrayList<PacketType>();
 
 	private boolean virtual = false;
-	
+	private String name = "SimpleComsDevice";
+
 
 	public abstract int read(byte[] message, int howLongToWaitBeforeTimeout);
-
 	public abstract int write(byte[] message, int length, int howLongToWaitBeforeTimeout);
-
 	public abstract boolean disconnectDeviceImp();
-	private String name = "SimpleComsDevice";
 	public abstract boolean connectDeviceImp();
+	
+	
 	private int readTimeout = 100;
 	private boolean isTimedOut  =false;
 	public void addPollingPacket(PacketType packet) {
@@ -63,8 +65,8 @@ public abstract class AbstractSimpleComsDevice {
 		for (PacketType pt : pollingQueue) {
 			if (FloatPacketType.class.isInstance(pt))
 				if (pt.idOfCommand == id) {
-					for (int i = 0; i < pt.downstream.length && i<values.length; i++) {
-						pt.downstream[i] = (float) values[i];
+					for (int i = 0; i < pt.getDownstream().length && i<values.length; i++) {
+						pt.getDownstream()[i] = (float) values[i];
 					}
 					return;
 				}
@@ -76,8 +78,8 @@ public abstract class AbstractSimpleComsDevice {
 			if (BytePacketType.class.isInstance(pt))
 
 				if (pt.idOfCommand == id) {
-					for (int i = 0; i < pt.downstream.length && i<values.length; i++) {
-						pt.downstream[i] = (byte) values[i];
+					for (int i = 0; i < pt.getDownstream().length && i<values.length; i++) {
+						pt.getDownstream()[i] = (byte) values[i];
 					}
 					return;
 				}
@@ -89,8 +91,8 @@ public abstract class AbstractSimpleComsDevice {
 			if (FloatPacketType.class.isInstance(pt))
 
 				if (pt.idOfCommand == id) {
-					for (int i = 0; i < pt.upstream.length && i<values.length; i++) {
-						float d =  (float) pt.upstream[i];
+					for (int i = 0; i < pt.getUpstream().length && i<values.length; i++) {
+						float d =  (float) pt.getUpstream()[i];
 						values[i] = d;
 					}
 					return;
@@ -102,8 +104,8 @@ public abstract class AbstractSimpleComsDevice {
 		for (PacketType pt : pollingQueue) {
 			if (BytePacketType.class.isInstance(pt))
 				if (pt.idOfCommand == id) {
-					for (int i = 0; i < pt.upstream.length && i<values.length; i++) {
-						values[i] = (byte) pt.upstream[i];
+					for (int i = 0; i < pt.getUpstream().length && i<values.length; i++) {
+						values[i] = (byte) pt.getUpstream()[i];
 					}
 					return;
 				}
@@ -115,12 +117,12 @@ public abstract class AbstractSimpleComsDevice {
 		try {
 			if (!isVirtual()) {
 				try {
-					byte[] message = packet.command(packet.idOfCommand, packet.downstream);
+					byte[] message = packet.command(packet.idOfCommand, packet.getDownstream());
 					// println "Writing: "+ message
 					int val = write(message, message.length, 1);
 					if (val > 0) {
 						int read = read(message, getReadTimeout());
-						if (read >= packet.upstream.length) {
+						if (read >= packet.getUpstream().length) {
 							// println "Parsing packet"
 							// println "read: "+ message
 							int ID = PacketType.getId(message);
@@ -130,8 +132,8 @@ public abstract class AbstractSimpleComsDevice {
 								}
 								isTimedOut=false;
 								Number[] up = packet.parse(message);
-								for (int i = 0; i < packet.upstream.length; i++) {
-									packet.upstream[i] = up[i];
+								for (int i = 0; i < packet.getUpstream().length; i++) {
+									packet.getUpstream()[i] = up[i];
 								}
 								// System.out.println("Took "+(System.currentTimeMillis()-start));
 							} else {
@@ -162,8 +164,8 @@ public abstract class AbstractSimpleComsDevice {
 				}
 			} else {
 				// println "Simulation"
-				for (int j = 0; j < packet.downstream.length && j < packet.upstream.length; j++) {
-					packet.upstream[j] = packet.downstream[j];
+				for (int j = 0; j < packet.getDownstream().length && j < packet.getUpstream().length; j++) {
+					packet.getUpstream()[j] = packet.getDownstream()[j];
 				}
 
 			}

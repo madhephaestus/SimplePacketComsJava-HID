@@ -15,7 +15,7 @@ import edu.wpi.SimplePacketComs.BytePacketType;
 public class UDPSimplePacketComs extends AbstractSimpleComsDevice {
 	private static final byte[] BROADCAST = new byte[] { (byte) 255, (byte) 255, (byte) 255, (byte) 255 };
 	public static final int PACKET_SIZE = 64;
-	private InetAddress address;
+	private InetAddress address=null;
 	private static InetAddress broadcast;
 	private static final HashSet<InetAddress> addrs = new HashSet<>();
 	private static final HashMap<InetAddress,String> names=new HashMap<>();
@@ -23,10 +23,14 @@ public class UDPSimplePacketComs extends AbstractSimpleComsDevice {
 	private byte[] receiveData = new byte[PACKET_SIZE];
 	private static final int port = 1865;
 	private DatagramPacket receivePacket = new DatagramPacket(receiveData, PACKET_SIZE);
-
-
+	private boolean listening = false;
+	public UDPSimplePacketComs() {
+		//this.address = address;
+		listening = true;
+	}
 	public UDPSimplePacketComs(InetAddress address) throws Exception {
 		this.address = address;
+		listening = false;
 	}
 
 	public static HashSet<InetAddress> getAllAddresses() throws Exception {
@@ -41,11 +45,11 @@ public class UDPSimplePacketComs extends AbstractSimpleComsDevice {
 		BytePacketType namePacket = new BytePacketType(1776, PACKET_SIZE);
 		if (name != null) {
 			byte[] bytes = name.getBytes();
-			for (int i = 0; i < namePacket.downstream.length && i < name.length(); i++)
-				namePacket.downstream[i] = bytes[i];
+			for (int i = 0; i < namePacket.getDownstream().length && i < name.length(); i++)
+				namePacket.getDownstream()[i] = bytes[i];
 		}else {
 			
-				namePacket.downstream[0] = new Byte((byte)'*');
+				namePacket.getDownstream()[0] = new Byte((byte)'*');
 		}
 		
 		byte[] message = namePacket.command();
@@ -91,6 +95,9 @@ public class UDPSimplePacketComs extends AbstractSimpleComsDevice {
 			String name = new String(namedata).trim();
 			names.put(receivePacket.getAddress(), name);
 		}
+		if(address==null) {
+			address=receivePacket.getAddress();
+		}
 		return len;
 	}
 
@@ -118,7 +125,11 @@ public class UDPSimplePacketComs extends AbstractSimpleComsDevice {
 	@Override
 	public boolean connectDeviceImp() {
 		try {
-			udpSock = new DatagramSocket();
+			if(listening)
+				udpSock = new DatagramSocket(port);
+			else
+				udpSock = new DatagramSocket();
+
 		} catch (SocketException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

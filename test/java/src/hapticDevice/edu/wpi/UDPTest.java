@@ -35,23 +35,23 @@ public class UDPTest {
 			device.addPollingPacket(gameController);
 			device.addEvent(1970, () -> {
 				System.out.print("\r\n\r\nPacket updated: ");
-				for (int i = 0; i < gameController.upstream.length; i++) {
-					System.out.print("Got: " + gameController.upstream[i] + " ");
+				for (int i = 0; i < gameController.getUpstream().length; i++) {
+					System.out.print("Got: " + gameController.getUpstream()[i] + " ");
 
 				}
 			});
 			device.connect();
 			Thread.sleep(100);
-			for (int i = 0; i < gameController.downstream.length; i++) {
-				gameController.downstream[i]=new Byte((byte) 42);
-				System.out.print("Send "+i+" " + gameController.downstream[i] + " ");
+			for (int i = 0; i < gameController.getDownstream().length; i++) {
+				gameController.getDownstream()[i]=new Byte((byte) 42);
+				System.out.print("Send "+i+" " + gameController.getDownstream()[i] + " ");
 
 			}
 
 			Thread.sleep(100);
-			for (int i = 0; i < gameController.downstream.length; i++) {
-				gameController.downstream[i]=new Byte((byte) 61);
-				System.out.print("Send "+i+" " + gameController.downstream[i] + " ");
+			for (int i = 0; i < gameController.getDownstream().length; i++) {
+				gameController.getDownstream()[i]=new Byte((byte) 61);
+				System.out.print("Send "+i+" " + gameController.getDownstream()[i] + " ");
 
 			}
 			Thread.sleep(10000);

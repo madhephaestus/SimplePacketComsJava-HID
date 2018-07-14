@@ -5,8 +5,8 @@ import java.nio.ByteOrder;
 
 public abstract class PacketType{
 	public int idOfCommand=0;
-	public Number [] downstream;
-	public Number [] upstream;
+	private Number [] downstream;
+	private Number [] upstream;
 	public boolean done=false;
 	public boolean started = false;
 
@@ -37,7 +37,7 @@ public abstract class PacketType{
 		//}
 	}
 	public  byte[] command() {
-		return command( idOfCommand, downstream);
+		return command( idOfCommand, getDownstream());
 	}
 	public void oneShotMode() {
 		oneShotMode =true;
@@ -60,9 +60,26 @@ public abstract class PacketType{
 		}
 		return false;
 	}
+	
 
 	public abstract Number[] parse(byte[] bytes);
 
 	public abstract byte[] command(int idOfCommand, Number[] values);
+
+	public Number [] getUpstream() {
+		return upstream;
+	}
+
+	public void setUpstream(Number [] upstream) {
+		this.upstream = upstream;
+	}
+
+	public Number [] getDownstream() {
+		return downstream;
+	}
+
+	public void setDownstream(Number [] downstream) {
+		this.downstream = downstream;
+	}
 	
 }

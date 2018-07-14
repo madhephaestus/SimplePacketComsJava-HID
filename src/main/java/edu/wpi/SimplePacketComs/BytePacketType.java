@@ -11,11 +11,11 @@ public class BytePacketType extends PacketType {
 		numberOfBytesPerValue = 1;
 		numValues = (packetSize / numberOfBytesPerValue) - (4 / numberOfBytesPerValue);
 		returnValues = new Number[numValues];
-		downstream = new Byte[numValues];
-		upstream = new Byte[numValues];
+		setDownstream(new Byte[numValues]);
+		setUpstream(new Byte[numValues]);
 		for (int i = 0; i < numValues; i++) {
-			downstream[i] = (byte) 0;
-			upstream[i] = (byte) 0;
+			getDownstream()[i] = (byte) 0;
+			getUpstream()[i] = (byte) 0;
 		}
 
 	}

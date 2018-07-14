@@ -13,11 +13,11 @@ public class FloatPacketType extends PacketType {
 		numValues = (packetSize / numberOfBytesPerValue) - (4 / numberOfBytesPerValue);
 		returnValues = new Number[numValues];
 		message = new byte[packetSize];
-		downstream = new Float[numValues];
-		upstream = new Float[numValues];
+		setDownstream(new Float[numValues]);
+		setUpstream(new Float[numValues]);
 		for (int i = 0; i < numValues; i++) {
-			downstream[i] = (float) 0;
-			upstream[i] = (float) 0;
+			getDownstream()[i] = (float) 0;
+			getUpstream()[i] = (float) 0;
 		}
 	}
 

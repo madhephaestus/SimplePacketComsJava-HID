@@ -28,16 +28,16 @@ public class HephaestusArm extends HIDSimplePacketComs{
 		addEvent(pollingPacket.idOfCommand, event);
 	}
 	public void setValuesevent(int index,float position, float velocity, float force){
-		pollingPacket.downstream[(index*3)+0] = position;
-		pollingPacket.downstream[(index*3)+1] = velocity;
-		pollingPacket.downstream[(index*3)+2] = force;
+		pollingPacket.getDownstream()[(index*3)+0] = position;
+		pollingPacket.getDownstream()[(index*3)+1] = velocity;
+		pollingPacket.getDownstream()[(index*3)+2] = force;
 		//println "Setting Downstream "+downstream
 	}
 	public void setPIDGains(int index,float kp, float ki, float kd){
 		
-		pidPacket.downstream[(index*3)+0] = kp;
-		pidPacket.downstream[(index*3)+1] = ki;
-		pidPacket.downstream[(index*3)+2] = kd;
+		pidPacket.getDownstream()[(index*3)+0] = kp;
+		pidPacket.getDownstream()[(index*3)+1] = ki;
+		pidPacket.getDownstream()[(index*3)+2] = kd;
 		//println "Setting Downstream "+downstream
 	}
 	public void pushPIDGains(){
@@ -45,15 +45,15 @@ public class HephaestusArm extends HIDSimplePacketComs{
 	}
 	public void setPDVelGains(int index,float kp, float kd){
 		
-		PDVelPacket.downstream[(index*2)+0] = kp;
-		PDVelPacket.downstream[(index*2)+1] = kd;
+		PDVelPacket.getDownstream()[(index*2)+0] = kp;
+		PDVelPacket.getDownstream()[(index*2)+1] = kd;
 		//println "Setting Downstream "+downstream
 	}
 	public void pushPDVelGains(){
 		PDVelPacket.oneShotMode();
 	}
 	public void setVelocity(int index,float TPS){
-		SetVelocity.downstream[index] = TPS;
+		SetVelocity.getDownstream()[index] = TPS;
 		//println "Setting Downstream "+downstream
 	}
 	public void pushVelocity(){
@@ -62,22 +62,22 @@ public class HephaestusArm extends HIDSimplePacketComs{
 	public List<Double> getValues(int index){
 		List<Double> back= new ArrayList<>();
 	
-		back.add(pollingPacket.upstream[(index*3)+0].doubleValue()) ;
-		back.add( pollingPacket.upstream[(index*3)+1].doubleValue());
-		back.add(pollingPacket.upstream[(index*3)+2].doubleValue());
+		back.add(pollingPacket.getUpstream()[(index*3)+0].doubleValue()) ;
+		back.add( pollingPacket.getUpstream()[(index*3)+1].doubleValue());
+		back.add(pollingPacket.getUpstream()[(index*3)+2].doubleValue());
 		
 		return back;
 	}
 	public double getPosition(int index) {
-		return pollingPacket.upstream[(index*3)+0].doubleValue();
+		return pollingPacket.getUpstream()[(index*3)+0].doubleValue();
 	}
 	
 	public Number[] getRawValues(){
-		return pollingPacket.upstream;
+		return pollingPacket.getUpstream();
 	}
 	public void setRawValues(Number[] set){
-		for(int i=0;i<set.length&&i<pollingPacket.downstream.length;i++) {
-			pollingPacket.downstream[i]=set[i];
+		for(int i=0;i<set.length&&i<pollingPacket.getDownstream().length;i++) {
+			pollingPacket.getDownstream()[i]=set[i];
 		}
 	}
 }
