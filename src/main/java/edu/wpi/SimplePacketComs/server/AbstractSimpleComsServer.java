@@ -2,39 +2,38 @@ package edu.wpi.SimplePacketComs.server;
 
 import java.util.HashMap;
 
-import edu.wpi.SimplePacketComs.BytePacketType;
-import edu.wpi.SimplePacketComs.FloatPacketType;
 import edu.wpi.SimplePacketComs.IPhysicalLayer;
 import edu.wpi.SimplePacketComs.PacketType;
 import edu.wpi.SimplePacketComs.device.Device;
 
-public abstract class AbstractSimpleComsServer implements Device,IPhysicalLayer {
-	private HashMap<Integer,IOnPacketEvent> servers = new HashMap<>();
-	private HashMap<IOnPacketEvent,PacketType> packets = new HashMap<>();
+public abstract class AbstractSimpleComsServer implements Device, IPhysicalLayer {
+	private HashMap<Integer, IOnPacketEvent> servers = new HashMap<>();
+	private HashMap<IOnPacketEvent, PacketType> packets = new HashMap<>();
 	boolean connected = false;
-	private byte[] data=null;
-	
+	private byte[] data = null;
+
 	public void addServer(PacketType packet, IOnPacketEvent iOnBytePacketEvent) {
-		servers.put(packet.idOfCommand,iOnBytePacketEvent);
+		servers.put(packet.idOfCommand, iOnBytePacketEvent);
 		packets.put(iOnBytePacketEvent, packet);
 	}
+
 	@Override
 	public boolean connect() {
-		connected=connectDeviceImp();
-		new Thread(()->{
-			while(connected) {
-				int readAmount = read(getData(),2);
-				if(readAmount>0) {
+		connected = connectDeviceImp();
+		new Thread(() -> {
+			while (connected) {
+				int readAmount = read(getData(), 2);
+				if (readAmount > 0) {
 					int ID = PacketType.getId(getData());
 					IOnPacketEvent event = servers.get(ID);
-					if(event!=null) {
+					if (event != null) {
 						PacketType packet = packets.get(event);
-						if(packet!=null) {
+						if (packet != null) {
 							Number[] dataValues = packet.parse(getData());
-							if(event.event(dataValues)) {
+							if (event.event(dataValues)) {
 								byte[] backData = packet.command(ID, dataValues);
 								write(backData, getPacketSize(), 2);
-							}else {
+							} else {
 								// flagged for no return
 							}
 						}
@@ -49,10 +48,11 @@ public abstract class AbstractSimpleComsServer implements Device,IPhysicalLayer 
 
 	@Override
 	public void disconnect() {
-		connected=false;
+		connected = false;
 	}
+
 	private byte[] getData() {
-		if(data==null)
+		if (data == null)
 			data = new byte[getPacketSize()];
 		return data;
 	}
@@ -60,9 +60,7 @@ public abstract class AbstractSimpleComsServer implements Device,IPhysicalLayer 
 	public abstract int read(byte[] message, int howLongToWaitBeforeTimeout);
 
 	public abstract int write(byte[] message, int length, int howLongToWaitBeforeTimeout);
-	public abstract int getPacketSize();
-	
-	
 
+	public abstract int getPacketSize();
 
 }
