@@ -90,13 +90,13 @@ jar {
 
 group = "com.neuronrobotics"
 archivesBaseName = "SimplePacketComsJava"
-version = "0.0.9"
+version = "0.4.0"
 
 
 artifacts {
 	archives javadocJar, sourcesJar, jar
 }
-/*
+
 signing {
 	sign configurations.archives
 }
@@ -145,4 +145,3 @@ uploadArchives {
 	}
   }
   
-*/
