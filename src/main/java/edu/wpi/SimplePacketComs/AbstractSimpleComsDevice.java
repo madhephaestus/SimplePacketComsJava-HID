@@ -5,7 +5,7 @@ import java.util.HashMap;
 
 import edu.wpi.SimplePacketComs.device.Device;
 
-public abstract class AbstractSimpleComsDevice implements Device,IPhysicalLayer{
+public abstract class AbstractSimpleComsDevice implements Device, IPhysicalLayer {
 	HashMap<Integer, ArrayList<Runnable>> events = new HashMap<>();
 	boolean connected = false;
 
@@ -14,23 +14,25 @@ public abstract class AbstractSimpleComsDevice implements Device,IPhysicalLayer{
 	private boolean virtual = false;
 	private String name = "SimpleComsDevice";
 
-
 	public abstract int read(byte[] message, int howLongToWaitBeforeTimeout);
+
 	public abstract int write(byte[] message, int length, int howLongToWaitBeforeTimeout);
+
 	public abstract boolean disconnectDeviceImp();
+
 	public abstract boolean connectDeviceImp();
-	
-	
+
 	private int readTimeout = 100;
-	private boolean isTimedOut  =false;
+	private boolean isTimedOut = false;
+
 	public void addPollingPacket(PacketType packet) {
-		if(getPacket(  packet.idOfCommand)!=null)
-				throw new RuntimeException(
-						"Only one packet of a given ID is allowed to poll. Add an event to recive data");
-		
+		if (getPacket(packet.idOfCommand) != null)
+			throw new RuntimeException("Only one packet of a given ID is allowed to poll. Add an event to recive data");
+
 		pollingQueue.add(packet);
 	}
-	private PacketType getPacket( int ID) {
+
+	private PacketType getPacket(int ID) {
 		for (PacketType q : pollingQueue) {
 			if (q.idOfCommand == ID) {
 				return q;
@@ -65,7 +67,7 @@ public abstract class AbstractSimpleComsDevice implements Device,IPhysicalLayer{
 		for (PacketType pt : pollingQueue) {
 			if (FloatPacketType.class.isInstance(pt))
 				if (pt.idOfCommand == id) {
-					for (int i = 0; i < pt.getDownstream().length && i<values.length; i++) {
+					for (int i = 0; i < pt.getDownstream().length && i < values.length; i++) {
 						pt.getDownstream()[i] = (float) values[i];
 					}
 					return;
@@ -78,12 +80,59 @@ public abstract class AbstractSimpleComsDevice implements Device,IPhysicalLayer{
 			if (BytePacketType.class.isInstance(pt))
 
 				if (pt.idOfCommand == id) {
-					for (int i = 0; i < pt.getDownstream().length && i<values.length; i++) {
+					for (int i = 0; i < pt.getDownstream().length && i < values.length; i++) {
 						pt.getDownstream()[i] = (byte) values[i];
 					}
 					return;
 				}
 		}
+	}
+	public void writeFloats(int id, Double[] values) {
+		for (PacketType pt : pollingQueue) {
+			if (FloatPacketType.class.isInstance(pt))
+				if (pt.idOfCommand == id) {
+					for (int i = 0; i < pt.getDownstream().length && i < values.length; i++) {
+						pt.getDownstream()[i] =  values[i];
+					}
+					return;
+				}
+		}
+	}
+
+	public void writeBytes(int id, Byte[] values) {
+		for (PacketType pt : pollingQueue) {
+			if (BytePacketType.class.isInstance(pt))
+
+				if (pt.idOfCommand == id) {
+					for (int i = 0; i < pt.getDownstream().length && i < values.length; i++) {
+						pt.getDownstream()[i] = values[i];
+					}
+					return;
+				}
+		}
+	}
+	public Double[] readFloats(int id) {
+		if (getPacket(id) == null) {
+			addPollingPacket(new FloatPacketType(id, 64));
+		}
+		PacketType pt = getPacket(id);
+		Double[] values = new Double[pt.getUpstream().length];
+		for (int i = 0; i < pt.getUpstream().length && i < values.length; i++) {
+			values[i] = pt.getUpstream()[i].doubleValue();
+		}
+		return values;
+	}
+
+	public Byte[] readBytes(int id) {
+		if (getPacket(id) == null) {
+			addPollingPacket(new BytePacketType(id, 64));
+		}
+		PacketType pt = getPacket(id);
+		Byte[] values = new Byte[pt.getUpstream().length];
+		for (int i = 0; i < pt.getUpstream().length && i < values.length; i++) {
+			values[i] = pt.getUpstream()[i].byteValue();
+		}
+		return values;
 	}
 
 	public void readFloats(int id, double[] values) {
@@ -91,20 +140,20 @@ public abstract class AbstractSimpleComsDevice implements Device,IPhysicalLayer{
 			if (FloatPacketType.class.isInstance(pt))
 
 				if (pt.idOfCommand == id) {
-					for (int i = 0; i < pt.getUpstream().length && i<values.length; i++) {
-						float d =  (float) pt.getUpstream()[i];
+					for (int i = 0; i < pt.getUpstream().length && i < values.length; i++) {
+						float d = (float) pt.getUpstream()[i];
 						values[i] = d;
 					}
 					return;
 				}
-		}	
+		}
 	}
 
 	public void readBytes(int id, byte[] values) {
 		for (PacketType pt : pollingQueue) {
 			if (BytePacketType.class.isInstance(pt))
 				if (pt.idOfCommand == id) {
-					for (int i = 0; i < pt.getUpstream().length && i<values.length; i++) {
+					for (int i = 0; i < pt.getUpstream().length && i < values.length; i++) {
 						values[i] = (byte) pt.getUpstream()[i];
 					}
 					return;
@@ -127,32 +176,33 @@ public abstract class AbstractSimpleComsDevice implements Device,IPhysicalLayer{
 							// println "read: "+ message
 							int ID = PacketType.getId(message);
 							if (ID == packet.idOfCommand) {
-								if(isTimedOut) {
-									System.out.println("Timout resolved "+ID);
+								if (isTimedOut) {
+									System.out.println("Timout resolved " + ID);
 								}
-								isTimedOut=false;
+								isTimedOut = false;
 								Number[] up = packet.parse(message);
 								for (int i = 0; i < packet.getUpstream().length; i++) {
 									packet.getUpstream()[i] = up[i];
 								}
 								// System.out.println("Took "+(System.currentTimeMillis()-start));
 							} else {
-								//readTimeout=readTimeout+(readTimeout/2);
+								// readTimeout=readTimeout+(readTimeout/2);
 
-								//System.out.print("\r\nCross Talk expected " + packet.idOfCommand + " Got: " + ID+" waiting "+readTimeout);
-								
+								// System.out.print("\r\nCross Talk expected " + packet.idOfCommand + " Got: " +
+								// ID+" waiting "+readTimeout);
+
 								for (int i = 0; i < 3; i++) {
 									read(message, getReadTimeout());// clear any possible stuck messages
 
 								}
 								System.out.println(" ");
-								isTimedOut=true;
+								isTimedOut = true;
 								return;
 							}
 						} else {
-							//System.out.println("Read failed");
-							//readTimeout=readTimeout+(readTimeout/2);
-							isTimedOut=true;
+							// System.out.println("Read failed");
+							// readTimeout=readTimeout+(readTimeout/2);
+							isTimedOut = true;
 							return;
 						}
 
@@ -172,7 +222,7 @@ public abstract class AbstractSimpleComsDevice implements Device,IPhysicalLayer{
 			// println "updaing "+upstream+" downstream "+downstream
 
 			if (events.get(packet.idOfCommand) != null) {
-				
+
 				for (Runnable e : events.get(packet.idOfCommand)) {
 					if (e != null) {
 						try {
@@ -184,13 +234,13 @@ public abstract class AbstractSimpleComsDevice implements Device,IPhysicalLayer{
 				}
 			}
 		} catch (Throwable t) {
-			//t.printStackTrace(System.out);
+			// t.printStackTrace(System.out);
 		}
 		packet.done = true;
 	}
 
 	private int getReadTimeout() {
-		
+
 		return readTimeout;
 	}
 
@@ -210,7 +260,7 @@ public abstract class AbstractSimpleComsDevice implements Device,IPhysicalLayer{
 					// println "loop"
 					try {
 						for (PacketType pollingPacket : pollingQueue) {
-							if(pollingPacket.sendOk())
+							if (pollingPacket.sendOk())
 								process(pollingPacket);
 						}
 					} catch (Exception e) {
@@ -240,7 +290,7 @@ public abstract class AbstractSimpleComsDevice implements Device,IPhysicalLayer{
 		// TODO Auto-generated method stub
 		return virtual;
 	}
-	
+
 	public void setVirtual(boolean virtual) {
 		this.virtual = virtual;
 	}
@@ -260,7 +310,5 @@ public abstract class AbstractSimpleComsDevice implements Device,IPhysicalLayer{
 	public boolean isTimedOut() {
 		return isTimedOut;
 	}
-
-	
 
 }
