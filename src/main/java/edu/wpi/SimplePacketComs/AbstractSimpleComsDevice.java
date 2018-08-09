@@ -87,7 +87,7 @@ public abstract class AbstractSimpleComsDevice implements Device, IPhysicalLayer
 				}
 		}
 	}
-	public void writeFloats(int id, Double[] values) {
+	public void writeFloats(Integer id, Double[] values) {
 		for (PacketType pt : pollingQueue) {
 			if (FloatPacketType.class.isInstance(pt))
 				if (pt.idOfCommand == id) {
@@ -99,7 +99,7 @@ public abstract class AbstractSimpleComsDevice implements Device, IPhysicalLayer
 		}
 	}
 
-	public void writeBytes(int id, Byte[] values) {
+	public void writeBytes(Integer id, Byte[] values) {
 		for (PacketType pt : pollingQueue) {
 			if (BytePacketType.class.isInstance(pt))
 
@@ -111,7 +111,7 @@ public abstract class AbstractSimpleComsDevice implements Device, IPhysicalLayer
 				}
 		}
 	}
-	public Double[] readFloats(int id) {
+	public Double[] readFloats(Integer id) {
 		if (getPacket(id) == null) {
 			addPollingPacket(new FloatPacketType(id, 64));
 		}
@@ -123,7 +123,7 @@ public abstract class AbstractSimpleComsDevice implements Device, IPhysicalLayer
 		return values;
 	}
 
-	public Byte[] readBytes(int id) {
+	public Byte[] readBytes(Integer id) {
 		if (getPacket(id) == null) {
 			addPollingPacket(new BytePacketType(id, 64));
 		}
