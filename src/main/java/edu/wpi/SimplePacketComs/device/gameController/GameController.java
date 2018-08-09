@@ -18,9 +18,12 @@ public class GameController extends UdpDevice{
 	private GameController(InetAddress add) throws Exception {
 		super(add);
 		addPollingPacket(gamestate);
-		addEvent(gamestate.idOfCommand, () -> {
-			readBytes(gamestate.idOfCommand, getData());
-			writeBytes(gamestate.idOfCommand, getStatus());
+		addEvent(gamestate.idOfCommand, new Runnable() {
+			@Override
+			public void run() {
+				readBytes(gamestate.idOfCommand, getData());
+				writeBytes(gamestate.idOfCommand, getStatus());
+			}
 		});
 	}
 	public static List<GameController> get(String name) throws Exception {

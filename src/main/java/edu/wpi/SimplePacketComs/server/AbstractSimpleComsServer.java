@@ -24,33 +24,36 @@ public abstract class AbstractSimpleComsServer implements Device, IPhysicalLayer
 	@Override
 	public boolean connect() {
 		connected = connectDeviceImp();
-		new Thread(() -> {
-			
-			while (connected) {
-				try {
-					int readAmount = read(getData(), 2);
-					if (readAmount > 0) {
-						int ID = PacketType.getId(getData());
-						IOnPacketEvent event = servers.get(ID);
-						if (event != null) {
-							PacketType packet = packets.get(event);
-							if (packet != null) {
-								Number[] dataValues = packet.parse(getData());
-								if (event.event(dataValues)) {
-									byte[] backData = packet.command(ID, dataValues);
-									write(backData, getPacketSize(), 2);
-								} else {
-									// flagged for no return
+		new Thread(new Runnable() {
+			@Override
+			public void run() {
+				
+				while (connected) {
+					try {
+						int readAmount = read(getData(), 2);
+						if (readAmount > 0) {
+							int ID = PacketType.getId(getData());
+							IOnPacketEvent event = servers.get(ID);
+							if (event != null) {
+								PacketType packet = packets.get(event);
+								if (packet != null) {
+									Number[] dataValues = packet.parse(getData());
+									if (event.event(dataValues)) {
+										byte[] backData = packet.command(ID, dataValues);
+										write(backData, getPacketSize(), 2);
+									} else {
+										// flagged for no return
+									}
 								}
 							}
 						}
+					}catch(Throwable t) {
+						t.printStackTrace();
 					}
-				}catch(Throwable t) {
-					t.printStackTrace();
 				}
+				disconnectDeviceImp();
+				System.out.println("Disconnect AbstractSimpleComsServer");
 			}
-			disconnectDeviceImp();
-			System.out.println("Disconnect AbstractSimpleComsServer");
 		}).start();
 		return connected;
 	}

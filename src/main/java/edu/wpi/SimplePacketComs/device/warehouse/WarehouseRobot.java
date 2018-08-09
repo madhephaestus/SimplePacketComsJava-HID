@@ -34,29 +34,38 @@ public class WarehouseRobot extends UdpDevice  {
 			addPollingPacket(pt);
 		}
 
-		addEvent(getStatus.idOfCommand, () -> {
-			readBytes(getStatus.idOfCommand, status);
+		addEvent(getStatus.idOfCommand, new Runnable() {
+			@Override
+			public void run() {
+				readBytes(getStatus.idOfCommand, status);
+			}
 		});
-		addEvent(directDrive.idOfCommand, () -> {
-			readFloats(directDrive.idOfCommand, driveStatus);
+		addEvent(directDrive.idOfCommand, new Runnable() {
+			@Override
+			public void run() {
+				readFloats(directDrive.idOfCommand, driveStatus);
+			}
 		});
-		addEvent(getLocation.idOfCommand, () -> {
-			readFloats(getLocation.idOfCommand, locationData);
-			double rotationAngleRadians = Math.PI / 180 * locationData[3];// azimuth	
+		addEvent(getLocation.idOfCommand, new Runnable() {
+			@Override
+			public void run() {
+				readFloats(getLocation.idOfCommand, locationData);
+				double rotationAngleRadians = Math.PI / 180 * locationData[3];// azimuth	
 
-			getLocationAffine().setMxx(Math.cos(rotationAngleRadians));
-			getLocationAffine().setMxy(Math.sin(rotationAngleRadians));
-			getLocationAffine().setMxz(0);
-			getLocationAffine().setMyx(-Math.sin(rotationAngleRadians));
-			getLocationAffine().setMyy(Math.cos(rotationAngleRadians));
-			getLocationAffine().setMyz(0);
-			getLocationAffine().setMzx(0);
-			getLocationAffine().setMzy(0);
-			getLocationAffine().setMzz(1);
-			getLocationAffine().setTx(locationData[0]);
-			getLocationAffine().setTy(locationData[1]);
-			getLocationAffine().setTz(locationData[2]);
-			
+				getLocationAffine().setMxx(Math.cos(rotationAngleRadians));
+				getLocationAffine().setMxy(Math.sin(rotationAngleRadians));
+				getLocationAffine().setMxz(0);
+				getLocationAffine().setMyx(-Math.sin(rotationAngleRadians));
+				getLocationAffine().setMyy(Math.cos(rotationAngleRadians));
+				getLocationAffine().setMyz(0);
+				getLocationAffine().setMzx(0);
+				getLocationAffine().setMzy(0);
+				getLocationAffine().setMzz(1);
+				getLocationAffine().setTx(locationData[0]);
+				getLocationAffine().setTy(locationData[1]);
+				getLocationAffine().setTz(locationData[2]);
+				
+			}
 		});
 		pickOrder.waitToSendMode();
 		clearFaults.waitToSendMode();
@@ -91,7 +100,10 @@ public class WarehouseRobot extends UdpDevice  {
 
 
 	public List<Double> getLocationData() {
-		return DoubleStream.of(locationData).boxed().collect(Collectors.toList());
+		ArrayList<Double> list = new ArrayList<>();
+		
+		return list;
+		//return DoubleStream.of(locationData).boxed().collect(Collectors.toList());
 
 	}
 
