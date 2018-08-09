@@ -12,9 +12,12 @@ public class ServoHID extends HIDSimplePacketComs {
 	public ServoHID(int vidIn, int pidIn) {
 		super(vidIn, pidIn);
 		addPollingPacket(gamestate);
-		addEvent(gamestate.idOfCommand, () -> {
-			readBytes(gamestate.idOfCommand, getData());
-			writeBytes(gamestate.idOfCommand, getStatus());
+		addEvent(gamestate.idOfCommand, new Runnable() {
+			@Override
+			public void run() {
+				readBytes(gamestate.idOfCommand, getData());
+				writeBytes(gamestate.idOfCommand, getStatus());
+			}
 		});
 	}
 	public byte[] getStatus() {

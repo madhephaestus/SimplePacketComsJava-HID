@@ -1,11 +1,9 @@
 package edu.wpi.SimplePacketComs.phy;
 
 import java.util.ArrayList;
-
 import org.hid4java.HidDevice;
 import org.hid4java.HidManager;
 import org.hid4java.HidServices;
-
 import edu.wpi.SimplePacketComs.AbstractSimpleComsDevice;
 
 public class HIDSimplePacketComs extends AbstractSimpleComsDevice {

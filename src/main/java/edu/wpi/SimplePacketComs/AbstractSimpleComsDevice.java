@@ -43,14 +43,14 @@ public abstract class AbstractSimpleComsDevice implements Device, IPhysicalLayer
 
 	public void removeEvent(Integer id, Runnable event) {
 		if (events.get(id) == null) {
-			events.put(id, new ArrayList<>());
+			events.put(id, new ArrayList<Runnable>());
 		}
 		events.get(id).remove(event);
 	}
 
 	public void addEvent(Integer id, Runnable event) {
 		if (events.get(id) == null) {
-			events.put(id, new ArrayList<>());
+			events.put(id, new ArrayList<Runnable>());
 		}
 		events.get(id).add(event);
 	}

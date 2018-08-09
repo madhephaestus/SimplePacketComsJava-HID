@@ -4,36 +4,40 @@ import edu.wpi.SimplePacketComs.BytePacketType;
 import edu.wpi.SimplePacketComs.PacketType;
 import edu.wpi.SimplePacketComs.phy.UDPSimplePacketComs;
 import edu.wpi.SimplePacketComs.server.AbstractSimpleComsServer;
+import edu.wpi.SimplePacketComs.server.IOnPacketEvent;
 
 public class UdpServer extends AbstractSimpleComsServer{
 	private UDPSimplePacketComs device=new UDPSimplePacketComs();
-	private String name;
+	private String myName;
 	
 	public UdpServer(String name) {
-		this.name=name;
-		addServer(new BytePacketType(1776, 64),packet -> {
-			byte[] data = name.getBytes();
-			for(int i=0;i<data.length;i++) {
-				if(packet[i].byteValue() =='*') {
-					for( i=0;i<data.length;i++) {
-						// Copy in our name completly
-						packet[i]=data[i];
+		this.myName=name;
+		addServer(new BytePacketType(1776, 64),new IOnPacketEvent() {
+			@Override
+			public boolean event(Number[] packet) {
+				byte[] data = myName.getBytes();
+				for(int i=0;i<data.length;i++) {
+					if(packet[i].byteValue() =='*') {
+						for( i=0;i<data.length;i++) {
+							// Copy in our name completly
+							packet[i]=data[i];
+						}
+						return true;
 					}
-					return true;
-				}
-				if(packet[i].byteValue()!=data[i]) {
-					byte[] dataforString = new byte[60];
-					for(int j=0;j<data.length;j++) {
-						if(packet[j].byteValue()==0)
-							break;
-						dataforString[j]=packet[j].byteValue();
+					if(packet[i].byteValue()!=data[i]) {
+						byte[] dataforString = new byte[60];
+						for(int j=0;j<data.length;j++) {
+							if(packet[j].byteValue()==0)
+								break;
+							dataforString[j]=packet[j].byteValue();
+						}
+						System.out.println("Failed name check, got: "+new String(dataforString).trim()+" expected "+myName);
+						return false;// failed the name check
 					}
-					System.out.println("Failed name check, got: "+new String(dataforString).trim()+" expected "+name);
-					return false;// failed the name check
 				}
+				// pass the name check
+				return true;
 			}
-			// pass the name check
-			return true;
 		});
 		
 	}
@@ -62,7 +66,7 @@ public class UdpServer extends AbstractSimpleComsServer{
 		return device.connectDeviceImp();
 	}
 	public String getName() {
-		return name;
+		return myName;
 	}
 
 	@Override

@@ -13,11 +13,17 @@ public class SimpleServoHID extends HIDSimplePacketComs {
 		super(vidIn, pidIn);
 		addPollingPacket(servos);
 		addPollingPacket(imuData);
-		addEvent(1962, () -> {
-			writeBytes(1962, data);
+		addEvent(1962, new Runnable() {
+			@Override
+			public void run() {
+				writeBytes(1962, data);
+			}
 		});
-		addEvent(1804, () -> {
-			readFloats(1804,status);
+		addEvent(1804, new Runnable() {
+			@Override
+			public void run() {
+				readFloats(1804,status);
+			}
 		});
 	}
 	public double[] getImuData() {

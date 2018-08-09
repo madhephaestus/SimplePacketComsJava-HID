@@ -16,8 +16,11 @@ public abstract class UdpDevice extends UDPSimplePacketComs  implements Device{
 		this.address=add;
 		getName.getDownstream()[0]=(byte)'*';// read name
 		
-		addEvent(getName.idOfCommand, () -> {
-			readBytes(getName.idOfCommand, name);// read name
+		addEvent(getName.idOfCommand, new Runnable() {
+			@Override
+			public void run() {
+				readBytes(getName.idOfCommand, name);// read name
+			}
 		});			
 		addPollingPacket(getName);
 		getName.oneShotMode();

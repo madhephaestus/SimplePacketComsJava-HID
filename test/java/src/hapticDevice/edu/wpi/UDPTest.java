@@ -31,13 +31,16 @@ public class UDPTest {
 		for (InetAddress add : addresses) {
 			System.out.println("Got " + add);
 			UDPSimplePacketComs device = new UDPSimplePacketComs(add);
-			BytePacketType gameController = new BytePacketType(1970, 64);
+			final BytePacketType gameController = new BytePacketType(1970, 64);
 			device.addPollingPacket(gameController);
-			device.addEvent(1970, () -> {
-				System.out.print("\r\n\r\nPacket updated: ");
-				for (int i = 0; i < gameController.getUpstream().length; i++) {
-					System.out.print("Got: " + gameController.getUpstream()[i] + " ");
+			device.addEvent(1970, new Runnable() {
+				@Override
+				public void run() {
+					System.out.print("\r\n\r\nPacket updated: ");
+					for (int i = 0; i < gameController.getUpstream().length; i++) {
+						System.out.print("Got: " + gameController.getUpstream()[i] + " ");
 
+					}
 				}
 			});
 			device.connect();

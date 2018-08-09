@@ -15,7 +15,7 @@ apply plugin: 'application'
 
 //apply plugin: 'com.github.johnrengelman.shadow'
 
-sourceCompatibility = '1.8'
+sourceCompatibility = '1.7'
 [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
 
 //apply from: 'http://gradle-plugins.mihosoft.eu/latest/vlicenseheader.gradle'
