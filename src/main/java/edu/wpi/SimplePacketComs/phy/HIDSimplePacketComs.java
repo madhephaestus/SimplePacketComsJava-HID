@@ -20,6 +20,10 @@ public class HIDSimplePacketComs extends AbstractSimpleComsDevice {
 		vid = vidIn;
 		pid = pidIn;
 	}
+	
+	public static HIDSimplePacketComs get(int vidIn, int pidIn) {
+		return new HIDSimplePacketComs(vidIn, pidIn);
+	}
 
 	@Override
 	public int read(byte[] message, int howLongToWaitBeforeTimeout) {
