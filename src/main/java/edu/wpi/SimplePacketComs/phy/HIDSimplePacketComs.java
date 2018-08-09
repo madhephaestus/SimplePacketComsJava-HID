@@ -17,13 +17,12 @@ public class HIDSimplePacketComs extends AbstractSimpleComsDevice {
 	private HidDevice hidDevice = null;
 	public HIDSimplePacketComs(int vidIn, int pidIn) {
 		// constructor
-		vid = vidIn;
-		pid = pidIn;
+		setVid(vidIn);
+		setPid(pidIn);
 	}
-	
-	public static HIDSimplePacketComs get(int vidIn, int pidIn) {
-		return new HIDSimplePacketComs(vidIn, pidIn);
+	public HIDSimplePacketComs() {
 	}
+
 
 	@Override
 	public int read(byte[] message, int howLongToWaitBeforeTimeout) {
@@ -61,7 +60,7 @@ public class HIDSimplePacketComs extends AbstractSimpleComsDevice {
 		// Provide a list of attached devices
 		hidDevice = null;
 		for (HidDevice h : hidServices.getAttachedHidDevices()) {
-			if (h.isVidPidSerial(vid, pid, null)) {
+			if (h.isVidPidSerial(getVid(), getPid(), null)) {
 				if (hidDevice == null) {
 					hidDevice = h;
 					hidDevice.open();
@@ -76,6 +75,18 @@ public class HIDSimplePacketComs extends AbstractSimpleComsDevice {
 		}
 
 		return false;
+	}
+	public int getVid() {
+		return vid;
+	}
+	public void setVid(int vid) {
+		this.vid = vid;
+	}
+	public int getPid() {
+		return pid;
+	}
+	public void setPid(int pid) {
+		this.pid = pid;
 	}
 
 }
