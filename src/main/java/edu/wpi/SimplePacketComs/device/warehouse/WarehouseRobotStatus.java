@@ -6,15 +6,16 @@ import java.util.Map;
 public enum WarehouseRobotStatus {
 	Ready_for_new_task ( (byte)0),
 	Heading_to_pickup ( (byte)1),
-	Picking_up ( (byte)2),
-	Heading_to_Dropoff ((byte) 3),
-	Dropping_off ( (byte)4),
-	Heading_to_safe_zone ((byte) 5),
-	Fault_failed_pickup ( (byte)6),
-	Fault_failed_dropoff ((byte) 7),
-	Fault_excessive_load ((byte) 8),
-	Fault_obstructed_path ((byte) 9),
-	Fault_E_Stop_pressed ( (byte)10);
+	Waiting_for_approval_to_pickup( (byte)2),
+	Picking_up ( (byte)3),
+	Heading_to_Dropoff ((byte) 4),
+	Dropping_off ( (byte)5),
+	Heading_to_safe_zone ((byte) 6),
+	Fault_failed_pickup ( (byte)7),
+	Fault_failed_dropoff ((byte) 8),
+	Fault_excessive_load ((byte) 9),
+	Fault_obstructed_path ((byte) 10),
+	Fault_E_Stop_pressed ( (byte)11);
 	private static final Map<Byte, WarehouseRobotStatus> lookup = new HashMap<>();
 
     static {
