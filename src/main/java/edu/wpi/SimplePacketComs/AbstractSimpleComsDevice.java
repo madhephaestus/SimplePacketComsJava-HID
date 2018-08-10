@@ -92,7 +92,7 @@ public abstract class AbstractSimpleComsDevice implements Device, IPhysicalLayer
 			if (FloatPacketType.class.isInstance(pt))
 				if (pt.idOfCommand == id) {
 					for (int i = 0; i < pt.getDownstream().length && i < values.length; i++) {
-						pt.getDownstream()[i] =  values[i];
+						pt.getDownstream()[i] =  values[i].floatValue();
 					}
 					return;
 				}
@@ -105,7 +105,7 @@ public abstract class AbstractSimpleComsDevice implements Device, IPhysicalLayer
 
 				if (pt.idOfCommand == id) {
 					for (int i = 0; i < pt.getDownstream().length && i < values.length; i++) {
-						pt.getDownstream()[i] = values[i];
+						pt.getDownstream()[i] = values[i].byteValue();
 					}
 					return;
 				}
