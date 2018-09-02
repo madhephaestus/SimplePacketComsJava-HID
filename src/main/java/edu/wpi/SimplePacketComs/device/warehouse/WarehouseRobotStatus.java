@@ -43,7 +43,7 @@ public enum WarehouseRobotStatus {
 		this.value = value;
 	}
 	public boolean isFault() {
-		return value>5;
+		return value>6;
 	}
 	
 }

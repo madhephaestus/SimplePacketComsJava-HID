@@ -57,14 +57,16 @@ public abstract class AbstractSimpleComsDevice implements Device, IPhysicalLayer
 
 	public ArrayList<Integer> getIDs() {
 		ArrayList<Integer> ids = new ArrayList<>();
-		for (PacketType pt : pollingQueue) {
+		for (int j=0;j<pollingQueue.size();j++) {
+			PacketType pt = pollingQueue.get(j);
 			ids.add(pt.idOfCommand);
 		}
 		return ids;
 	}
 
 	public void writeFloats(int id, double[] values) {
-		for (PacketType pt : pollingQueue) {
+		for (int j=0;j<pollingQueue.size();j++) {
+			PacketType pt = pollingQueue.get(j);
 			if (FloatPacketType.class.isInstance(pt))
 				if (pt.idOfCommand == id) {
 					for (int i = 0; i < pt.getDownstream().length && i < values.length; i++) {
@@ -76,7 +78,8 @@ public abstract class AbstractSimpleComsDevice implements Device, IPhysicalLayer
 	}
 
 	public void writeBytes(int id, byte[] values) {
-		for (PacketType pt : pollingQueue) {
+		for (int j=0;j<pollingQueue.size();j++) {
+			PacketType pt = pollingQueue.get(j);
 			if (BytePacketType.class.isInstance(pt))
 
 				if (pt.idOfCommand == id) {
@@ -88,7 +91,8 @@ public abstract class AbstractSimpleComsDevice implements Device, IPhysicalLayer
 		}
 	}
 	public void writeFloats(Integer id, Double[] values) {
-		for (PacketType pt : pollingQueue) {
+		for (int j=0;j<pollingQueue.size();j++) {
+			PacketType pt = pollingQueue.get(j);
 			if (FloatPacketType.class.isInstance(pt))
 				if (pt.idOfCommand == id) {
 					for (int i = 0; i < pt.getDownstream().length && i < values.length; i++) {
@@ -100,7 +104,8 @@ public abstract class AbstractSimpleComsDevice implements Device, IPhysicalLayer
 	}
 
 	public void writeBytes(Integer id, Byte[] values) {
-		for (PacketType pt : pollingQueue) {
+		for (int j=0;j<pollingQueue.size();j++) {
+			PacketType pt = pollingQueue.get(j);
 			if (BytePacketType.class.isInstance(pt))
 
 				if (pt.idOfCommand == id) {
@@ -136,7 +141,8 @@ public abstract class AbstractSimpleComsDevice implements Device, IPhysicalLayer
 	}
 
 	public void readFloats(int id, double[] values) {
-		for (PacketType pt : pollingQueue) {
+		for (int j=0;j<pollingQueue.size();j++) {
+			PacketType pt = pollingQueue.get(j);
 			if (FloatPacketType.class.isInstance(pt))
 
 				if (pt.idOfCommand == id) {
@@ -150,7 +156,8 @@ public abstract class AbstractSimpleComsDevice implements Device, IPhysicalLayer
 	}
 
 	public void readBytes(int id, byte[] values) {
-		for (PacketType pt : pollingQueue) {
+		for (int j=0;j<pollingQueue.size();j++) {
+			PacketType pt = pollingQueue.get(j);
 			if (BytePacketType.class.isInstance(pt))
 				if (pt.idOfCommand == id) {
 					for (int i = 0; i < pt.getUpstream().length && i < values.length; i++) {
@@ -259,7 +266,9 @@ public abstract class AbstractSimpleComsDevice implements Device, IPhysicalLayer
 
 					// println "loop"
 					try {
-						for (PacketType pollingPacket : pollingQueue) {
+						
+						for (int i=0;i<pollingQueue.size();i++) {
+							PacketType pollingPacket = pollingQueue.get(i);
 							if (pollingPacket.sendOk())
 								process(pollingPacket);
 						}
