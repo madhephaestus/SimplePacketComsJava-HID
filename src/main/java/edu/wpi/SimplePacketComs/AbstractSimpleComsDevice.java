@@ -30,6 +30,7 @@ public abstract class AbstractSimpleComsDevice implements Device, IPhysicalLayer
 			throw new RuntimeException("Only one packet of a given ID is allowed to poll. Add an event to recive data");
 
 		pollingQueue.add(packet);
+
 	}
 
 	private PacketType getPacket(int ID) {
@@ -57,7 +58,7 @@ public abstract class AbstractSimpleComsDevice implements Device, IPhysicalLayer
 
 	public ArrayList<Integer> getIDs() {
 		ArrayList<Integer> ids = new ArrayList<>();
-		for (int j=0;j<pollingQueue.size();j++) {
+		for (int j = 0; j < pollingQueue.size(); j++) {
 			PacketType pt = pollingQueue.get(j);
 			ids.add(pt.idOfCommand);
 		}
@@ -66,71 +67,120 @@ public abstract class AbstractSimpleComsDevice implements Device, IPhysicalLayer
 
 	public void writeFloats(int id, double[] values) {
 		if (getPacket(id) == null) {
-			addPollingPacket(new FloatPacketType(id, 64));
-		}
-		for (int j=0;j<pollingQueue.size();j++) {
-			PacketType pt = pollingQueue.get(j);
-			if (FloatPacketType.class.isInstance(pt))
-				if (pt.idOfCommand == id) {
-					for (int i = 0; i < pt.getDownstream().length && i < values.length; i++) {
-						pt.getDownstream()[i] = (float) values[i];
+			FloatPacketType pt = new FloatPacketType(id, 64);
+			for (int i = 0; i < pt.getDownstream().length && i < values.length; i++) {
+				pt.getDownstream()[i] = (float) values[i];
+			}
+			addPollingPacket(pt);
+			try {
+				Thread.sleep(10);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		} else
+			for (int j = 0; j < pollingQueue.size(); j++) {
+				PacketType pt = pollingQueue.get(j);
+				if (FloatPacketType.class.isInstance(pt))
+					if (pt.idOfCommand == id) {
+						for (int i = 0; i < pt.getDownstream().length && i < values.length; i++) {
+							pt.getDownstream()[i] = (float) values[i];
+						}
+						return;
 					}
-					return;
-				}
-		}
+			}
 	}
 
 	public void writeBytes(int id, byte[] values) {
 		if (getPacket(id) == null) {
-			addPollingPacket(new BytePacketType(id, 64));
-		}
-		for (int j=0;j<pollingQueue.size();j++) {
-			PacketType pt = pollingQueue.get(j);
-			if (BytePacketType.class.isInstance(pt))
+			BytePacketType pt = new BytePacketType(id, 64);
+			for (int i = 0; i < pt.getDownstream().length && i < values.length; i++) {
+				pt.getDownstream()[i] = (byte) values[i];
+			}
+			addPollingPacket(pt);
+			try {
+				Thread.sleep(10);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		} else
+			for (int j = 0; j < pollingQueue.size(); j++) {
+				PacketType pt = pollingQueue.get(j);
+				if (BytePacketType.class.isInstance(pt))
 
-				if (pt.idOfCommand == id) {
-					for (int i = 0; i < pt.getDownstream().length && i < values.length; i++) {
-						pt.getDownstream()[i] = (byte) values[i];
+					if (pt.idOfCommand == id) {
+						for (int i = 0; i < pt.getDownstream().length && i < values.length; i++) {
+							pt.getDownstream()[i] = (byte) values[i];
+						}
+						return;
 					}
-					return;
-				}
-		}
+			}
 	}
+
 	public void writeFloats(Integer id, Double[] values) {
 		if (getPacket(id) == null) {
-			addPollingPacket(new FloatPacketType(id, 64));
-		}
-		for (int j=0;j<pollingQueue.size();j++) {
-			PacketType pt = pollingQueue.get(j);
-			if (FloatPacketType.class.isInstance(pt))
-				if (pt.idOfCommand == id) {
-					for (int i = 0; i < pt.getDownstream().length && i < values.length; i++) {
-						pt.getDownstream()[i] =  values[i].floatValue();
+			FloatPacketType pt = new FloatPacketType(id, 64);
+			for (int i = 0; i < pt.getDownstream().length && i < values.length; i++) {
+				pt.getDownstream()[i] = values[i].floatValue();
+			}
+			addPollingPacket(pt);
+			try {
+				Thread.sleep(10);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		} else
+			for (int j = 0; j < pollingQueue.size(); j++) {
+				PacketType pt = pollingQueue.get(j);
+				if (FloatPacketType.class.isInstance(pt))
+					if (pt.idOfCommand == id) {
+						for (int i = 0; i < pt.getDownstream().length && i < values.length; i++) {
+							pt.getDownstream()[i] = values[i].floatValue();
+						}
+						return;
 					}
-					return;
-				}
-		}
+			}
 	}
 
 	public void writeBytes(Integer id, Byte[] values) {
 		if (getPacket(id) == null) {
-			addPollingPacket(new BytePacketType(id, 64));
-		}
-		for (int j=0;j<pollingQueue.size();j++) {
-			PacketType pt = pollingQueue.get(j);
-			if (BytePacketType.class.isInstance(pt))
+			PacketType pt = new BytePacketType(id, 64);
+			for (int i = 0; i < pt.getDownstream().length && i < values.length; i++) {
+				pt.getDownstream()[i] = values[i].byteValue();
+			}
+			addPollingPacket(pt);
+			try {
+				Thread.sleep(10);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		} else
 
-				if (pt.idOfCommand == id) {
-					for (int i = 0; i < pt.getDownstream().length && i < values.length; i++) {
-						pt.getDownstream()[i] = values[i].byteValue();
+			for (int j = 0; j < pollingQueue.size(); j++) {
+				PacketType pt = pollingQueue.get(j);
+				if (BytePacketType.class.isInstance(pt))
+
+					if (pt.idOfCommand == id) {
+						for (int i = 0; i < pt.getDownstream().length && i < values.length; i++) {
+							pt.getDownstream()[i] = values[i].byteValue();
+						}
+						return;
 					}
-					return;
-				}
-		}
+			}
 	}
+
 	public Double[] readFloats(Integer id) {
 		if (getPacket(id) == null) {
 			addPollingPacket(new FloatPacketType(id, 64));
+			try {
+				Thread.sleep(10);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		PacketType pt = getPacket(id);
 		Double[] values = new Double[pt.getUpstream().length];
@@ -143,6 +193,12 @@ public abstract class AbstractSimpleComsDevice implements Device, IPhysicalLayer
 	public Byte[] readBytes(Integer id) {
 		if (getPacket(id) == null) {
 			addPollingPacket(new BytePacketType(id, 64));
+			try {
+				Thread.sleep(10);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		PacketType pt = getPacket(id);
 		Byte[] values = new Byte[pt.getUpstream().length];
@@ -153,7 +209,16 @@ public abstract class AbstractSimpleComsDevice implements Device, IPhysicalLayer
 	}
 
 	public void readFloats(int id, double[] values) {
-		for (int j=0;j<pollingQueue.size();j++) {
+		if (getPacket(id) == null) {
+			addPollingPacket(new FloatPacketType(id, 64));
+			try {
+				Thread.sleep(10);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		for (int j = 0; j < pollingQueue.size(); j++) {
 			PacketType pt = pollingQueue.get(j);
 			if (FloatPacketType.class.isInstance(pt))
 
@@ -168,7 +233,16 @@ public abstract class AbstractSimpleComsDevice implements Device, IPhysicalLayer
 	}
 
 	public void readBytes(int id, byte[] values) {
-		for (int j=0;j<pollingQueue.size();j++) {
+		if (getPacket(id) == null) {
+			addPollingPacket(new BytePacketType(id, 64));
+			try {
+				Thread.sleep(10);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		for (int j = 0; j < pollingQueue.size(); j++) {
 			PacketType pt = pollingQueue.get(j);
 			if (BytePacketType.class.isInstance(pt))
 				if (pt.idOfCommand == id) {
@@ -278,8 +352,8 @@ public abstract class AbstractSimpleComsDevice implements Device, IPhysicalLayer
 
 					// println "loop"
 					try {
-						
-						for (int i=0;i<pollingQueue.size();i++) {
+
+						for (int i = 0; i < pollingQueue.size(); i++) {
 							PacketType pollingPacket = pollingQueue.get(i);
 							if (pollingPacket.sendOk())
 								process(pollingPacket);
