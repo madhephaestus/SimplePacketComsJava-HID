@@ -33,9 +33,9 @@ public abstract class AbstractSimpleComsDevice implements Device, IPhysicalLayer
 
 	}
 
-	private PacketType getPacket(int ID) {
+	public PacketType getPacket(Integer ID) {
 		for (PacketType q : pollingQueue) {
-			if (q.idOfCommand == ID) {
+			if (q.idOfCommand == ID.intValue()) {
 				return q;
 			}
 		}
@@ -113,14 +113,19 @@ public abstract class AbstractSimpleComsDevice implements Device, IPhysicalLayer
 						for (int i = 0; i < pt.getDownstream().length && i < values.length; i++) {
 							pt.getDownstream()[i] = (byte) values[i];
 						}
+						
 						return;
 					}
 			}
 	}
-
 	public void writeFloats(Integer id, Double[] values) {
+		writeFloats(id,values,true);
+	}
+	public void writeFloats(Integer id, Double[] values, Boolean polling) {
 		if (getPacket(id) == null) {
 			FloatPacketType pt = new FloatPacketType(id, 64);
+			if(!polling)
+				pt.oneShotMode();
 			for (int i = 0; i < pt.getDownstream().length && i < values.length; i++) {
 				pt.getDownstream()[i] = values[i].floatValue();
 			}
@@ -139,14 +144,20 @@ public abstract class AbstractSimpleComsDevice implements Device, IPhysicalLayer
 						for (int i = 0; i < pt.getDownstream().length && i < values.length; i++) {
 							pt.getDownstream()[i] = values[i].floatValue();
 						}
+						if(!polling)
+							pt.oneShotMode();
 						return;
 					}
 			}
 	}
-
 	public void writeBytes(Integer id, Byte[] values) {
+		writeBytes(id,values,true);
+	}
+	public void writeBytes(Integer id, Byte[] values, Boolean polling) {
 		if (getPacket(id) == null) {
 			PacketType pt = new BytePacketType(id, 64);
+			if(!polling)
+				pt.oneShotMode();
 			for (int i = 0; i < pt.getDownstream().length && i < values.length; i++) {
 				pt.getDownstream()[i] = values[i].byteValue();
 			}
@@ -167,6 +178,8 @@ public abstract class AbstractSimpleComsDevice implements Device, IPhysicalLayer
 						for (int i = 0; i < pt.getDownstream().length && i < values.length; i++) {
 							pt.getDownstream()[i] = values[i].byteValue();
 						}
+						if(!polling)
+							pt.oneShotMode();
 						return;
 					}
 			}
