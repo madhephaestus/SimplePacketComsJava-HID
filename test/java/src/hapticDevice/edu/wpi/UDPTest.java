@@ -24,7 +24,7 @@ public class UDPTest {
 
 	@Test
 	public void test() throws Exception {
-		HashSet<InetAddress> addresses = UDPSimplePacketComs.getAllAddresses("GameController_*");
+		HashSet<InetAddress> addresses = UDPSimplePacketComs.getAllAddresses("*");
 		if (addresses.size() < 1) {
 			fail("No devices found");
 		}
