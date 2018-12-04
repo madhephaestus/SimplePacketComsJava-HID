@@ -26,6 +26,25 @@ task wrapper(type: Wrapper, description: 'Creates and deploys the Gradle wrapper
     gradleVersion = '4.0'
 }
 
+repositories {
+	mavenCentral()
+	jcenter()
+	maven { url 'https://repository-bubblecloud.forge.cloudbees.com/release/'}
+	maven { url 'https://clojars.org/repo' }
+	maven { url 'https://jline.sourceforge.net/m2repo' }
+	maven { url 'https://repo.spring.io/milestone'}
+	maven { url 'https://jenkinsci.artifactoryonline.com/jenkinsci/public/' }
+	//com.neuronrobotics hosting point
+	maven { url 'https://oss.sonatype.org/content/repositories/staging/' }
+	maven { url 'https://plugins.gradle.org/m2/' }
+	maven { url 'https://dl.bintray.com/clearcontrol/ClearControl' }
+	maven { url "https://jitpack.io" }
+	maven { url 'https://oss.sonatype.org/content/repositories/snapshots/'  }
+	maven { url 'https://oss.sonatype.org/service/local/staging/deploy/maven2/'  }
+	maven { url 'https://oss.sonatype.org/content/repositories/releases/'  }
+	
+}
+
 task customFatJar(type: Jar) {
     manifest {
         attributes 'Main-Class': 'com.baeldung.fatjar.Application'
