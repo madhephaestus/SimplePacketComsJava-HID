@@ -79,7 +79,7 @@ mainClassName = ""
 dependencies {
 	testCompile 'junit:junit:4.10'
 	compile 'org.hid4java:hid4java:0.5.0'
-	
+	compile "com.neuronrobotics:SimplePacketComsJava:0.7.0"
 }
 
 Date buildTimeAndDate = new Date()
@@ -108,8 +108,8 @@ jar {
 }
 
 group = "com.neuronrobotics"
-archivesBaseName = "SimplePacketComsJava"
-version = "0.5.2"
+archivesBaseName = "SimplePacketComsJava-HID"
+version = "0.0.1"
 
 
 artifacts {
@@ -140,9 +140,9 @@ uploadArchives {
 		  url 'https://github.com/madhephaestus/SimplePacketComsJava'
   
 		  scm {
-			connection 			'scm:git:https://github.com/madhephaestus/SimplePacketComsJava.git'
-			developerConnection 'scm:git:git@github.com:madhephaestus/SimplePacketComsJava.git'
-			url 'https://github.com/madhephaestus/SimplePacketComsJava'
+			connection 			'scm:git:https://github.com/madhephaestus/SimplePacketComsJava-HID.git'
+			developerConnection 'scm:git:git@github.com:madhephaestus/SimplePacketComsJava-HID.git'
+			url 'https://github.com/madhephaestus/SimplePacketComsJava-HID'
 		  }
   
 		  licenses {
@@ -163,4 +163,5 @@ uploadArchives {
 	  }
 	}
   }
-  */
+  
+*/
