@@ -98,7 +98,7 @@ mainClassName = ""
 dependencies {
 	testCompile 'junit:junit:4.10'
 	compile 'org.hid4java:hid4java:0.5.0'
-	compile 'com.neuronrobotics:SimplePacketComsJava:0.7.0'
+	compile 'com.neuronrobotics:SimplePacketComsJava:0.9.2'
 }
 
 Date buildTimeAndDate = new Date()
@@ -128,7 +128,7 @@ jar {
 
 group = "com.neuronrobotics"
 archivesBaseName = "SimplePacketComsJava-HID"
-version = "0.0.1"
+version = "0.9.2"
 
 
 artifacts {
@@ -152,11 +152,11 @@ uploadArchives {
 		}
   
 		pom.project {
-		  name 'JCSG JavaCad'
+		  name 'Simple Packet coms jar for HID support'
 		  packaging 'jar'
 		  // optionally artifactId can be defined here
-		  description 'A simple packet communication library'
-		  url 'https://github.com/madhephaestus/SimplePacketComsJava'
+		  description 'A simple packet communication library using HID'
+		  url 'https://github.com/madhephaestus/SimplePacketComsJava-HID'
   
 		  scm {
 			connection 			'scm:git:https://github.com/madhephaestus/SimplePacketComsJava-HID.git'
