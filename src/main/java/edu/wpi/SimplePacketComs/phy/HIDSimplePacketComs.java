@@ -57,22 +57,25 @@ public class HIDSimplePacketComs extends AbstractSimpleComsDevice {
 			hidServices = HidManager.getHidServices();
 		// Provide a list of attached devices
 		hidDevice = null;
+		int foundInterface=-1;
 		for (HidDevice h : hidServices.getAttachedHidDevices()) {
 			if (h.isVidPidSerial(getVid(), getPid(), null)) {
-				if (hidDevice == null) {
+				System.out.println(hidDevice);
+				if (hidDevice == null &&h.getInterfaceNumber()> foundInterface) {
 					hidDevice = h;
-					hidDevice.open();
-					connected.add(this);
-					System.out.println("Found! " + hidDevice);
-					return true;
+					foundInterface=h.getInterfaceNumber();
+					System.out.println("Found! " +foundInterface+" "+ hidDevice);
 				} else {
-					System.out.println("Already opened! this matches too.. " + h);
+					System.out.println("Also Found this matches too.. " + h);
 				}
 
 			}
 		}
-
-		return false;
+		if(hidDevice == null)
+			return false;
+		hidDevice.open();
+		connected.add(this);
+		return true;
 	}
 	public int getVid() {
 		return vid;

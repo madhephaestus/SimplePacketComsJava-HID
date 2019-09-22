@@ -96,7 +96,7 @@ mainClassName = ""
 dependencies {
 	testCompile 'junit:junit:4.10'
 	compile 'org.hid4java:hid4java:0.5.0'
-	compile 'com.neuronrobotics:SimplePacketComsJava:0.9.2'
+	compile 'com.neuronrobotics:SimplePacketComsJava:0.10.1'
 }
 
 Date buildTimeAndDate = new Date()
@@ -112,7 +112,7 @@ jar {
 
 group = "com.neuronrobotics"
 archivesBaseName = "SimplePacketComsJava-HID"
-version = "0.10.0"
+version = "0.11.0"
 
 shadowJar {
    baseName = archivesBaseName
@@ -170,4 +170,4 @@ uploadArchives {
 	  }
 	}
   }
-  
+ 
