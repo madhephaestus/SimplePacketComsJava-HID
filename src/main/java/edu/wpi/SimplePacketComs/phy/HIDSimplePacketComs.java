@@ -13,14 +13,15 @@ public class HIDSimplePacketComs extends AbstractSimpleComsDevice {
 	private static ArrayList<HIDSimplePacketComs> connected = new ArrayList<>();
 
 	private HidDevice hidDevice = null;
+
 	public HIDSimplePacketComs(int vidIn, int pidIn) {
 		// constructor
 		setVid(vidIn);
 		setPid(pidIn);
 	}
+
 	public HIDSimplePacketComs() {
 	}
-
 
 	@Override
 	public int read(byte[] message, int howLongToWaitBeforeTimeout) {
@@ -34,16 +35,24 @@ public class HIDSimplePacketComs extends AbstractSimpleComsDevice {
 
 	@Override
 	public boolean disconnectDeviceImp() {
-		// TODO Auto-generated method stub
-		if (hidDevice != null) {
-			hidDevice.close();
+		try {
+			// TODO Auto-generated method stub
+			if (hidDevice != null) {
+				hidDevice.close();
+			}
+		} catch (Throwable t) {
+			t.printStackTrace();
 		}
-		if(connected.contains(this))
+		if (connected.contains(this))
 			connected.remove(this);
-		if(connected.size()==0)
+		if (connected.size() == 0)
 			if (hidServices != null) {
 				// Clean shutdown
-				hidServices.shutdown();
+				try {
+					hidServices.shutdown();
+				} catch (Throwable t) {
+					t.printStackTrace();
+				}
 				hidServices = null;
 			}
 		System.out.println("HID device clean shutdown");
@@ -57,35 +66,41 @@ public class HIDSimplePacketComs extends AbstractSimpleComsDevice {
 			hidServices = HidManager.getHidServices();
 		// Provide a list of attached devices
 		hidDevice = null;
-		int foundInterface=-1;
+		int foundInterface = Integer.MAX_VALUE;
 		for (HidDevice h : hidServices.getAttachedHidDevices()) {
 			if (h.isVidPidSerial(getVid(), getPid(), null)) {
-				System.out.println(hidDevice);
-				if (hidDevice == null &&h.getInterfaceNumber()> foundInterface) {
+				System.out.println("Found! " + h.getInterfaceNumber() + " " + h);
+				if (h.getInterfaceNumber() < foundInterface && !h.isOpen() ) {
 					hidDevice = h;
-					foundInterface=h.getInterfaceNumber();
-					System.out.println("Found! " +foundInterface+" "+ hidDevice);
-				} else {
-					System.out.println("Also Found this matches too.. " + h);
+					foundInterface = h.getInterfaceNumber();
 				}
 
 			}
 		}
-		if(hidDevice == null)
+
+		if (hidDevice == null)
 			return false;
-		hidDevice.open();
-		connected.add(this);
-		return true;
+		System.out.println("Connecting to " + foundInterface + " " + hidDevice);
+		boolean opened =hidDevice.open();
+		if(opened) {
+			connected.add(this);
+			return true;
+		}
+		throw new RuntimeException();
 	}
+
 	public int getVid() {
 		return vid;
 	}
+
 	public void setVid(int vid) {
 		this.vid = vid;
 	}
+
 	public int getPid() {
 		return pid;
 	}
+
 	public void setPid(int pid) {
 		this.pid = pid;
 	}
