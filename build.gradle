@@ -112,7 +112,7 @@ jar {
 
 group = "com.neuronrobotics"
 archivesBaseName = "SimplePacketComsJava-HID"
-version = "0.13.0"
+version = "0.13.1"
 
 shadowJar {
    baseName = archivesBaseName

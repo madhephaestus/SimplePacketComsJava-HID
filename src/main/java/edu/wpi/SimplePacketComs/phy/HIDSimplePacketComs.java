@@ -69,7 +69,7 @@ public class HIDSimplePacketComs extends AbstractSimpleComsDevice {
 		int foundInterface = Integer.MAX_VALUE;
 		for (HidDevice h : hidServices.getAttachedHidDevices()) {
 			if (h.isVidPidSerial(getVid(), getPid(), null)) {
-				System.out.println("Found! " + h.getInterfaceNumber() + " " + h);
+				//System.out.println("Found! " + h.getInterfaceNumber() + " " + h);
 				if (h.getInterfaceNumber() < foundInterface && !h.isOpen() ) {
 					hidDevice = h;
 					foundInterface = h.getInterfaceNumber();
